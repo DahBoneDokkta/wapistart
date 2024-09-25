@@ -10,13 +10,13 @@ namespace Models;
 public class csCity : ISeed<csCity>
 {
     public virtual Guid CityId {get; set;}
-    public string Name {get; set;}
+    public virtual string Name {get; set;}
     public int ZipCode {get; set;}
     public string Address {get; set;}
 
     public bool Seeded {get; set;} = false;
 
-    public virtual ICountry Country { get; set; } // Testar detta
+    public virtual List<ICountry> Country { get; set; } // Testar detta
     public virtual csCity Seed (csSeedGenerator _seeder)
     {
         CityId = Guid.NewGuid();

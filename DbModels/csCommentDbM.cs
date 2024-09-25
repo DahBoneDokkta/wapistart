@@ -15,7 +15,10 @@ public class csCommentDbM : csComment, ISeed<csCommentDbM>
     public override Guid CommentId { get; set; }
     
     [NotMapped]
-    public override List<IAttraction> Name { get => AttractionDbM; set => throw new NotImplementedException(); }
+    public override List<IAttraction> Name 
+    { 
+        get => AttractionDbM.ConvertAll(async => (IAttraction)async); 
+        set => throw new NotImplementedException(); }
 
     [JsonIgnore]
     public  csAttractionDbM AttractionDbM { get; set; }

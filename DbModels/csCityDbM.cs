@@ -15,7 +15,19 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
     public override Guid CityId { get; set; }
     
     [NotMapped]
-    public override ICountry Country {get; set;}
+    public override List<ICountry> Country
+    { 
+        get => Countries?.Cast<ICountry>().ToList(); 
+        set => throw new NotImplementedException(); 
+    }
+
+    public List<csCountryDbM> Countries { get; set; }
+    public csCityDbM()
+    {
+        // Initialisera Countries om det behövs
+        Countries = new List<csCountryDbM>();
+    }
+
 
     // [JsonIgnore]
     // // Navigation property to City -> Country

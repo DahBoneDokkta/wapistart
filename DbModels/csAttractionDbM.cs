@@ -17,8 +17,8 @@ public class csAttractionDbM : csAttraction, ISeed<csAttractionDbM>
     [NotMapped]
     public override List<IComment> CommentText 
     { 
-    get => CommentDbM?.Cast<IComment>().ToList(); 
-    set => throw new NotImplementedException(); 
+        get => CommentDbM?.Cast<IComment>().ToList(); 
+        set => throw new NotImplementedException(); 
     }
     public List<csCommentDbM> CommentDbM { get; set; } 
     // [JsonIgnore]

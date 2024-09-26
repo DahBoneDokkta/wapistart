@@ -21,11 +21,11 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
     // public DbSet<csZooDbM> Zoos { get; set; }
     // public DbSet<csAttraction> Attractions { get; set; }
     // public DbSet<csComment> Comments { get; set; }
-    public DbSet<csCountryDbM> Country {get; set;}
-    public DbSet<csCityDbM> City {get; set;}
+    public DbSet<csCountryDbM> Countries {get; set;}
+    public DbSet<csCityDbM> Cities {get; set;}
     public DbSet<csAttractionDbM> AttractionName {get; set;}
-    public DbSet<csUserDbM> User {get; set;}
-    public DbSet<csCommentDbM> Comment {get; set;}
+    public DbSet<csUserDbM> Users {get; set;}
+    public DbSet<csCommentDbM> Comments {get; set;}
     #endregion
 
 

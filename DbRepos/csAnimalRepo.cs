@@ -1,4 +1,4 @@
-using Configuration;
+﻿using Configuration;
 using Models;
 using DbModels;
 using DbContext;
@@ -7,16 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DbRepos;
 
-public class csCountryRepo : ICountryRepo
+public class csAnimalRepo : IAnimalRepo
 {
 
     private const string seedSource = "./friends-seeds1.json";
 
-    public async Task<List<ICountry>> Countries(int _count)
+    public async Task<List<IAnimal>> AfricanAnimals(int _count)
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
-            return await db.Countries.Include(a => a.CitiesDbM).Take(_count).ToListAsync<ICountry>();
+            return await db.Animals.Include(a => a.ZooDbM).Take(_count).ToListAsync<IAnimal>();
         }
     }
     public async Task Seed(int _count)
@@ -25,16 +25,16 @@ public class csCountryRepo : ICountryRepo
         var _seeder = new csSeedGenerator(fn);
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
-            var country = _seeder.ItemsToList<csCountryDbM>(5);
-            var cities = _seeder.ItemsToList<csCityDbM>(_count);
+            var zoos = _seeder.ItemsToList<csZooDbM>(5);
+            var animals = _seeder.ItemsToList<csAnimalDbM>(_count);
 
-            foreach (var a in cities)
+            foreach (var a in animals)
             {
-                a.CountryDbM = _seeder.FromList(country);
+                a.ZooDbM = _seeder.FromList(zoos);
             }
             
             
-            db.Countries.AddRange(country);
+            db.Animals.AddRange(animals);
             await db.SaveChangesAsync();
         }
     }

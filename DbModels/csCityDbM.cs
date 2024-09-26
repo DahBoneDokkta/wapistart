@@ -6,7 +6,6 @@ using Seido.Utilities.SeedGenerator;
 using Newtonsoft.Json;
 
 
-
 namespace DbModels;
 
 public class csCityDbM : csCity, ISeed<csCityDbM>
@@ -15,17 +14,15 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
     public override Guid CityId { get; set; }
     
     [NotMapped]
-    public override List<ICountry> Country
+    public override ICountry Country
     { 
-        get => Countries?.Cast<ICountry>().ToList(); 
+        get => CountryDbM; 
         set => throw new NotImplementedException(); 
     }
 
-    public List<csCountryDbM> Countries { get; set; }
+    public csCountryDbM CountryDbM { get; set; }
     public csCityDbM()
     {
-        // Initialisera Countries om det behövs
-        Countries = new List<csCountryDbM>();
     }
 
 

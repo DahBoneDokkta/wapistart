@@ -7,7 +7,7 @@ using System;
 
 namespace Models;
 
-public class csAttraction : ISeed<csAttraction>
+public class csAttraction : IAttraction, ISeed<csAttraction>
 {
     public virtual Guid AttractionId {get; set;}
     
@@ -15,6 +15,8 @@ public class csAttraction : ISeed<csAttraction>
     
     public virtual List<IComment> CommentText {get; set;}
     public bool Seeded {get; set;} = false;
+    public List<IComment> Comments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public virtual csAttraction Seed (csSeedGenerator _seeder)
     {
         AttractionId = Guid.NewGuid();

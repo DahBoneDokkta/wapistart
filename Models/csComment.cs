@@ -12,6 +12,7 @@ public class csComment : ISeed<csComment>
     public virtual Guid CommentId {get; set;}
     public virtual string CommentText {get; set;}
     public DateTime Date {get; set;}
+    public virtual IAttraction Attraction {get; set;}
     
     public bool Seeded {get; set;} = false;
     public virtual csComment Seed (csSeedGenerator _seeder)

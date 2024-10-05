@@ -28,4 +28,9 @@ public class csCommentDbM : csComment, ISeed<csCommentDbM>
         base.Seed (_seeder);
         return this;
     }
+
+    csCommentDbM ISeed<csCommentDbM>.Seed(csSeedGenerator seedGenerator)
+    {
+        throw new NotImplementedException();
+    }
 }

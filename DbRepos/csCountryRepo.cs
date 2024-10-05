@@ -19,6 +19,12 @@ public class csCountryRepo : ICountryRepo
             return await db.Countries.Include(a => a.CitiesDbM).Take(_count).ToListAsync<ICountry>();
         }
     }
+
+    public Task<List<ICountry>> Country(int _count)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task Seed(int _count)
     {
         var fn = Path.GetFullPath(seedSource);

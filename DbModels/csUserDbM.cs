@@ -17,8 +17,9 @@ public class csUserDbM : csUser, ISeed<csUserDbM>
     [NotMapped]
     public override List<IComment> CommentText { get; set;}
 
-    // [JsonIgnore]
-    // public  csCommentDbM CommentDbM { get; set; }
+    // Navigation property
+    [JsonIgnore]
+    public List<csCommentDbM> Comments { get; set; }
 
     public override csUserDbM Seed (csSeedGenerator _seeder)
     {

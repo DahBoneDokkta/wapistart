@@ -21,14 +21,20 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
     }
 
     public csCountryDbM CountryDbM { get; set; }
-    public csCityDbM()
+
+    [NotMapped]
+    public override List<IComment> CommentText
     {
+        get => Comments?.Cast<IComment>().ToList();
+        set => throw new NotImplementedException();
     }
 
+    [JsonIgnore]
+    public List<csCommentDbM> Comments {get; set;}
 
-    // [JsonIgnore]
-    // // Navigation property to City -> Country
-    // public  csCountryDbM CountryDbM { get; set; }
+     public csCityDbM()
+    {
+    }
 
     public override csCityDbM Seed (csSeedGenerator _seeder)
     {

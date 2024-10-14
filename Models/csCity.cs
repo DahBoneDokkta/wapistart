@@ -17,6 +17,9 @@ public class csCity : ICity, ISeed<csCity>
     public virtual ICountry Country {get; set;}
     public bool Seeded {get; set;} = false;
 
+    public virtual List<csAttraction> Attractions {get; set;}
+    public virtual List<csComment> CommentText {get; set;}
+
     public virtual csCity Seed (csSeedGenerator _seeder)
     {
         CityId = Guid.NewGuid();

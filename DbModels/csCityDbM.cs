@@ -23,9 +23,9 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
     public csCountryDbM CountryDbM { get; set; }
 
     [NotMapped]
-    public override List<IComment> CommentText
+    public override List<csComment> CommentText
     {
-        get => Comments?.Cast<IComment>().ToList();
+        get => Comments?.Cast<csComment>().ToList();
         set => throw new NotImplementedException();
     }
 

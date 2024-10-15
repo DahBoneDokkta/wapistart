@@ -13,7 +13,7 @@ public interface IUserService {
 
 public interface ICommentService
 {
-    public Task<List<ICommentService>> Comments(int _count);
+    public Task<List<ICommentService>> Comment(int _count);
     public Task Seed(int _count);
 }
 

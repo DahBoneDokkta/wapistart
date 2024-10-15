@@ -15,15 +15,21 @@ public class csCommentDbM : csComment, ISeed<csCommentDbM>
     public override Guid CommentId { get; set; }
     
     [NotMapped]
-    public override List<IAttraction> Name 
+    public override string CommentText 
     { 
-        get => AttractionDbM.ConvertAll(async => (IAttraction)async); 
+        get => AttractionDbM?.ToString();
         set => throw new NotImplementedException(); }
 
     [JsonIgnore]
     public  csAttractionDbM AttractionDbM { get; set; }
 
-    public override csAttractionDbM Seed (csSeedGenerator _seeder)
+    [ForeignKey("CityId")]
+    public csCityDbM City {get; set;}
+
+    [ForeignKey("UserId")]
+    public override csUser User {get; set;}
+
+    public override csCommentDbM Seed (csSeedGenerator _seeder)
     {
         base.Seed (_seeder);
         return this;
@@ -31,6 +37,6 @@ public class csCommentDbM : csComment, ISeed<csCommentDbM>
 
     csCommentDbM ISeed<csCommentDbM>.Seed(csSeedGenerator seedGenerator)
     {
-        throw new NotImplementedException();
+        return this;
     }
 }

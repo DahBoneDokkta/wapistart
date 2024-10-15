@@ -14,15 +14,19 @@ public class csAttractionDbM : csAttraction, ISeed<csAttractionDbM>
     [Key]
     public override Guid AttractionId { get; set; }
     
-    [NotMapped]
-    public override List<IComment> CommentText 
+    [JsonIgnore]
+    public new List<csComment> Comments {get; set;}
+
+    [NotMapped] 
+    public override List<IComment> CommentText
     { 
-        get => CommentDbM?.Cast<IComment>().ToList(); 
+        get => Comments?.Cast<IComment>().ToList(); 
         set => throw new NotImplementedException(); 
     }
-    public List<csCommentDbM> CommentDbM { get; set; } 
-    // [JsonIgnore]
-    // public  csCityDbM CityDbM { get; set; }
+    public List<csCommentDbM> CommentDbM { get; set; }
+    
+    [JsonIgnore]
+    public  csCityDbM CityDbM { get; set; }
 
     public override csAttractionDbM Seed (csSeedGenerator _seeder)
     {

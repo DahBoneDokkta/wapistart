@@ -5,11 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using Seido.Utilities.SeedGenerator;
-
 using Models;
 using Services;
 using Configuration;
+using Seido.Utilities.SeedGenerator;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,12 +20,42 @@ namespace AppWebApi.Controllers
         public string DbConnection { get; set; }
         public DbSetDetail DbSetActive { get; set; }
     }
+
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class csAdminController : Controller
     {
         private ILogger<csAdminController> _logger = null;
-        private IAnimalsService _service = null;
+        private csSeedGenerator _seeder = null;
+        private readonly ICountryService _countryService;
+        private readonly ICityService _cityService;
+        private readonly IAttractionService _attractionService;
+        private readonly IUserService _userService;
+        private readonly ICommentService _commentService;
+
+        public csAdminController(
+            ILogger<csAdminController> logger,
+            ICountryService countryService,
+            ICityService cityService,
+            IAttractionService attractionService,
+            IUserService userService,
+            ICommentService commentService)
+        {
+            _logger = logger;
+            _seeder = seeder;
+            _countryService = countryService;
+            _cityService = cityService;
+            _attractionService = attractionService;
+            _userService = userService;
+            _commentService = commentService;
+        }
+        // public csAdminController(ILogger<csAdminController> logger)
+        // {
+        //     _logger = logger;
+        //     _seeder = new csSeedGenerator();
+        // }
+
+
 
         //GET: api/csAdmin/Info
         [HttpGet()]
@@ -47,28 +76,26 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                _logger.LogError(ex, "Error in Info endpoint");
+                return BadRequest("An error occured while processing your request.");
             }           
         }
 
-        //GET: api/csAdmin/AfricanAnimals
+        //GET: api/csAdmin/Seed
         [HttpGet()]
-        [ActionName("AfricanAnimals")]
-        [ProducesResponseType(200, Type = typeof(List<IAnimal>))]
+        [ActionName("Seed")]
+        [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> AfricanAnimals(string count = "10")
+        public async Task<IActionResult> Seed(string count = "10")
         {
             try
             {
                 _logger.LogInformation("Endpoint AfricanAnimals executed");
                 int _count = int.Parse(count);
 
+                await _countryService.SeedCountriesAsync(_count);
 
-                List<IAnimal> animals = await _service.AfricanAnimals(_count);
-                //List<IAnimal> animals = new csAnimalsService1().AfricanAnimals(_count);
-
-
+                List<csAnimal> animals = await _service.AfricanAnimals(_count);
                 return Ok(animals);
             }
             catch (Exception ex)
@@ -115,11 +142,7 @@ namespace AppWebApi.Controllers
             }
             return Ok("No messages in log");
         }
-        public csAdminController(IAnimalsService service,  ILogger<csAdminController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
+ 
     }
 }
 

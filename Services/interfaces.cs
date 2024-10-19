@@ -5,10 +5,10 @@ using Seido.Utilities.SeedGenerator;
 namespace Services;
 
 
-public interface IUserService {
-
-    public Task<List<IUserService>> Users(int _count);
-    public Task Seed(int _count);
+public interface IUserService 
+{
+    Task<List<IUser>> GetUsersAsync (int _count);
+    Task SeedUserAsync(int _count);
 }
 
 public interface ICommentService

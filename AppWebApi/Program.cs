@@ -28,6 +28,10 @@ builder.Services.AddSingleton<ILoggerProvider, csInMemoryLoggerProvider>();
 // builder.Services.AddScoped<IAnimalRepo, csAnimalRepo>();
 //builder.Services.AddScoped<IAnimalsService,csAnimalServiceDb>();
 builder.Services.AddScoped<ICountryService, csCountries>();
+builder.Services.AddScoped<ICityService, csCity>();
+builder.Services.AddScoped<IAttractionService, csAttraction>();
+builder.Services.AddScoped<IUserService, csUser>();
+builder.Services.AddScoped<ICommentService, csComment>();
 #endregion
 
 var app = builder.Build();

@@ -35,6 +35,7 @@ namespace AppWebApi.Controllers
 
         public csAdminController(
             ILogger<csAdminController> logger,
+            csSeedGenerator seeder,
             ICountryService countryService,
             ICityService cityService,
             IAttractionService attractionService,
@@ -90,37 +91,43 @@ namespace AppWebApi.Controllers
         {
             try
             {
-                _logger.LogInformation("Endpoint AfricanAnimals executed");
+                _logger.LogInformation("Endpoint Seed executed");
                 int _count = int.Parse(count);
 
                 await _countryService.SeedCountriesAsync(_count);
+                await _cityService.SeedCitiesAsync(_count);
+                await _attractionService.SeedAttractionsAsync(_count);
+                await _userService.SeedUsersAsync(_count);
+                await _commentService.SeedCommentsAsync(_count);
 
-                List<csAnimal> animals = await _service.AfricanAnimals(_count);
-                return Ok(animals);
+                return Ok("Seeding completed");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                return BadRequest(ex.Message);
+                _logger.LogError(ex, "Error in Seed endpoint");
+                return BadRequest("An error occured while processing your request.");
             }
            
         }
 
-        //GET: api/csAdmin/AfricanAnimals
+        //GET: api/csAdmin/ClearTestData
         [HttpGet()]
-        [ActionName("Seed")]
+        [ActionName("ClearTestData")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> Seed(string count = "10")
+        public async Task<IActionResult> ClearTestData()
         {
             try
             {
-                _logger.LogInformation("Endpoint Seed executed");
-                int _count = int.Parse(count);
+                _logger.LogInformation("Endpoint ClearTestData executed");
+                
+                await _countryService.ClearTestDataAsync();
+                await _cityService.ClearTestDataAsync();
+                await _countryService.ClearTestDataAsync();
+                await _countryService.ClearTestDataAsync();
+                await _countryService.ClearTestDataAsync();
 
-
-                await _service.Seed(_count);
-                return Ok("Seeded");
+                return Ok("Test data cleared");
             }
             catch (Exception ex)
             {

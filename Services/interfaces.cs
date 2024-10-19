@@ -8,29 +8,34 @@ namespace Services;
 public interface IUserService 
 {
     Task<List<IUser>> GetUsersAsync (int _count);
-    Task SeedUserAsync(int _count);
+    Task SeedUsersAsync(int _count);
+    Task ClearTestDataAsync();
 }
 
 public interface ICommentService
 {
-    public Task<List<ICommentService>> Comment(int _count);
-    public Task Seed(int _count);
+    Task<List<ICommentService>> GetCommentsAsync(int _count);
+    Task SeedCommentsAsync(int _count);
+    Task ClearTestDataAsync();
 }
 
 public interface IAttractionService
 {
-    public Task<List<IAttractionService>> Attractions(int _count);
-    public Task Seed(int _count);
+    Task<List<IAttractionService>> GetAttractionsAsync(int _count);
+    Task SeedAttractionsAsync(int _count);
+    Task ClearTestDataAsync();
 }
 
 public interface ICityService
 {
-    public Task<List<ICityService>> Cities(int _count);
-    public Task Seed(int _count);
+    Task<List<ICityService>> GetCitiesAsync(int _count);
+    Task SeedCitiesAsync(int _count);
+    Task ClearTestDataAsync();
 }
 
 public interface ICountryService
 {
-    public Task<List<ICountryService>> Countries(int _count);
-    public Task Seed(int _count);
+    Task<List<ICountryService>> GetCountriesAsync(int _count);
+    Task SeedCountriesAsync(int _count);
+    Task ClearTestDataAsync();
 }

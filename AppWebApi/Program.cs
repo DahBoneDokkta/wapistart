@@ -27,11 +27,11 @@ builder.Services.AddSingleton<ILoggerProvider, csInMemoryLoggerProvider>();
 //builder.Services.AddSingleton<IAnimalsService,csAnimalsService2>();
 // builder.Services.AddScoped<IAnimalRepo, csAnimalRepo>();
 //builder.Services.AddScoped<IAnimalsService,csAnimalServiceDb>();
-builder.Services.AddScoped<ICountryService, CountryName>();
-builder.Services.AddScoped<ICityService, City>();
-builder.Services.AddScoped<IAttractionService, Attraction>();
-builder.Services.AddScoped<IUserService, User>();
-builder.Services.AddScoped<ICommentService, Comment>();
+builder.Services.AddScoped<ICountryService, csCountryService>();
+builder.Services.AddScoped<ICityService, csCityService>();
+builder.Services.AddScoped<IAttractionService, csAttractionService>();
+builder.Services.AddScoped<IUserService, csUserService>();
+builder.Services.AddScoped<ICommentService, csCommentService>();
 #endregion
 
 var app = builder.Build();

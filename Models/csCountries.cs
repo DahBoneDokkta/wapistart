@@ -11,8 +11,7 @@ public abstract class csCountries : ICountry, ISeed<csCountries>
 {
     public virtual Guid CountryId {get; set;}
     public string CountryName {get; set;}
-    
-    public virtual List<ICity> Cities {get; set;}
+    public virtual ICollection<ICity> Cities {get; set;}
     public bool Seeded {get; set;} = false;
     public virtual csCountries Seed (csSeedGenerator _seeder)
     {

@@ -12,7 +12,8 @@ public class csUser : IUser, ISeed<csUser>
     public string LastName {get; set;}
     public string Email {get; set;}
     
-    public virtual List<IComment> CommentText {get; set;}
+    // public virtual List<IComment> CommentText {get; set;}
+    public virtual ICollection<IComment> CommentText {get; set;}
     public bool Seeded {get; set;} = false;
     public virtual csUser Seed (csSeedGenerator _seeder)
     {

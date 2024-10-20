@@ -13,7 +13,9 @@ public class csAttraction : IAttraction, ISeed<csAttraction>
     
     public virtual string Name {get; set;}
     
-    public virtual List<IComment> CommentText {get; set;}
+    // public virtual List<IComment> CommentText {get; set;}
+    public virtual ICollection<IComment> CommentText {get; set;}
+    public virtual ICity City {get; set;}
     public bool Seeded {get; set;} = false;
     public List<IComment> Comments { get; set;}
 

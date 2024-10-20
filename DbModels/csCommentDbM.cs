@@ -28,6 +28,7 @@ public class csCommentDbM : csComment, ISeed<csCommentDbM>
 
     [ForeignKey("UserId")]
     public override csUser User {get; set;}
+    public bool IsTestData { get; set; }
 
     public override csCommentDbM Seed (csSeedGenerator _seeder)
     {

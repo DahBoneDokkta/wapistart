@@ -14,12 +14,13 @@ public class csUserDbM : csUser, ISeed<csUserDbM>
     [Key]
     public override Guid UserId { get; set; }
     
-    [NotMapped]
-    public override List<IComment> CommentText { get; set;}
+    // public override List<IComment> CommentText { get; set;}
+    public override ICollection<IComment> CommentText { get; set; }
 
     // Navigation property
     [JsonIgnore]
     public List<csCommentDbM> Comments { get; set; }
+    public bool IsTestData { get; set; }
 
     public override csUserDbM Seed (csSeedGenerator _seeder)
     {

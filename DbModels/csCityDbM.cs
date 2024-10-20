@@ -31,6 +31,7 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
 
     [JsonIgnore]
     public List<csCommentDbM> Comments {get; set;}
+    public bool IsTestData { get; set; }
 
      public csCityDbM()
     {

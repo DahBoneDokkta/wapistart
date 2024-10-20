@@ -14,28 +14,28 @@ public interface IUserService
 
 public interface ICommentService
 {
-    Task<List<ICommentService>> GetCommentsAsync(int _count);
+    Task<List<IComment>> GetCommentsAsync(int _count);
     Task SeedCommentsAsync(int _count);
     Task ClearTestDataAsync();
 }
 
 public interface IAttractionService
 {
-    Task<List<IAttractionService>> GetAttractionsAsync(int _count);
+    Task<List<IAttraction>> GetAttractionsAsync(int _count);
     Task SeedAttractionsAsync(int _count);
     Task ClearTestDataAsync();
 }
 
 public interface ICityService
 {
-    Task<List<ICityService>> GetCitiesAsync(int _count);
+    Task<List<ICity>> GetCitiesAsync(int _count);
     Task SeedCitiesAsync(int _count);
     Task ClearTestDataAsync();
 }
 
 public interface ICountryService
 {
-    Task<List<ICountryService>> GetCountriesAsync(int _count);
+    Task<List<ICountry>> GetCountriesAsync(int _count);
     Task SeedCountriesAsync(int _count);
     Task ClearTestDataAsync();
 }

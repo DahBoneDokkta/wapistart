@@ -16,14 +16,13 @@ public class csAttractionDbM : csAttraction, ISeed<csAttractionDbM>
     
     [JsonIgnore]
     public new List<csComment> Comments {get; set;}
-
-    [NotMapped] 
-    public override List<IComment> CommentText
+    public override ICollection<IComment> CommentText
     { 
         get => Comments?.Cast<IComment>().ToList(); 
         set => throw new NotImplementedException(); 
     }
     public List<csCommentDbM> CommentDbM { get; set; }
+    public bool IsTestData { get; set; }
     
     [JsonIgnore]
     public  csCityDbM CityDbM { get; set; }

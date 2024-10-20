@@ -27,6 +27,10 @@ namespace Services
         public async Task SeedUsersAsync(int count)
         {
             var users = _seeder.ItemsToList<csUserDbM>(count);
+            foreach (var user in users)
+            {
+                user.IsTestData = true;
+            }
             await _context.Users.AddRangeAsync(users);
             await _context.SaveChangesAsync();
         }

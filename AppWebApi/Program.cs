@@ -3,6 +3,8 @@ using DbRepos;
 using Services;
 using Configuration;
 using System.Runtime.InteropServices;
+using DbContext;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

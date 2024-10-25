@@ -40,7 +40,7 @@ public class csUserRepo : IUserRepo
 
             foreach (var user in users)
             {
-                user.CommentText = comments.Cast<IComment>().ToList();;
+                user.CommentText = comments.Cast<csComment>().ToList();;
             }
             
             

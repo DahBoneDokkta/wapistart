@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 public interface ICityRepo
 {
-    public Task<List<ICity>> City(int _count);
-    public Task Seed(int _count);
+    Task<List<ICity>> Cities(int _count);
+    Task Seed(int _count);
 }
 public interface ICountryRepo
 {

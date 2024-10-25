@@ -23,8 +23,8 @@ public class csCommentDbM : csComment, ISeed<csCommentDbM>
     [JsonIgnore]
     public  csAttractionDbM AttractionDbM { get; set; }
 
-    [ForeignKey("CityId")]
-    public csCityDbM City {get; set;}
+    // [ForeignKey("CityId")]
+    // public csCityDbM City {get; set;}
 
     [ForeignKey("UserId")]
     public override csUser User {get; set;}

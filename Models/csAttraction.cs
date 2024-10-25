@@ -9,15 +9,19 @@ namespace Models;
 
 public class csAttraction : IAttraction, ISeed<csAttraction>
 {
-    public virtual Guid AttractionId {get; set;}
+    [Key]
+    public virtual Guid AttractionId {get; set;} = Guid.NewGuid();
     
     public virtual string Name {get; set;}
+    public virtual string Category {get; set;}
+    public virtual string Title {get; set;}
+    public virtual string Description {get; set;}
     
-    // public virtual List<IComment> CommentText {get; set;}
-    public virtual ICollection<IComment> CommentText {get; set;}
-    public virtual ICity City {get; set;}
+    public virtual ICollection<csComment> CommentText {get; set;}
+    public virtual csCity City {get; set;}
+    public virtual csCountries Country {get; set;}
     public bool Seeded {get; set;} = false;
-    public List<IComment> Comments { get; set;}
+    //public ICollection<IComment> CommentText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public virtual csAttraction Seed (csSeedGenerator _seeder)
     {

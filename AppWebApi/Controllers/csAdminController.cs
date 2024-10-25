@@ -63,23 +63,24 @@ namespace AppWebApi.Controllers
         [ActionName("Info")]
         [ProducesResponseType(200, Type = typeof(csWapiInfo))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> Info()
+        public IActionResult Info()
         {
             try
             {
                 _logger.LogInformation("Endpoint Info executed");
-                var _info = new csWapiInfo {
+                var _info = new csWapiInfo
+                {
                     Environment = csAppConfig.ASPNETCOREEnvironment,
                     DbSetActive = csAppConfig.DbSetActive
                 };
-                
+
                 return Ok(_info);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in Info endpoint");
                 return BadRequest("An error occured while processing your request.");
-            }           
+            }
         }
 
         //GET: api/csAdmin/Seed
@@ -123,9 +124,9 @@ namespace AppWebApi.Controllers
                 
                 await _countryService.ClearTestDataAsync();
                 await _cityService.ClearTestDataAsync();
-                await _countryService.ClearTestDataAsync();
-                await _countryService.ClearTestDataAsync();
-                await _countryService.ClearTestDataAsync();
+                await _attractionService.ClearTestDataAsync();
+                await _userService.ClearTestDataAsync();
+                await _commentService.ClearTestDataAsync();
 
                 return Ok("Test data cleared");
             }

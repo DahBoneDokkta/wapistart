@@ -9,10 +9,11 @@ namespace Models;
 
 public class csComment : ISeed<csComment>
 {
+    [Key]
     public virtual Guid CommentId {get; set;}
     public virtual string CommentText {get; set;}
     public DateTime Date {get; set;}
-    public virtual IAttraction Attraction {get; set;}
+    public virtual csAttraction Attraction {get; set;}
     public virtual csUser User {get; set;}
     
     public bool Seeded {get; set;} = false;

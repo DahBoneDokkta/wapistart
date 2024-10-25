@@ -12,25 +12,28 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
 {
     [Key]
     public override Guid CityId { get; set; }
+    public string Name {get; set;}
+    public string ZipCode {get; set;}
+    public string Address {get; set;}
     
     [NotMapped]
-    public override ICountry Country
+    public override csCountries Country
     { 
         get => CountryDbM; 
         set => throw new NotImplementedException(); 
     }
-
-    public csCountryDbM CountryDbM { get; set; }
-
-    [NotMapped]
-    public override List<csComment> CommentText
-    {
-        get => Comments?.Cast<csComment>().ToList();
-        set => throw new NotImplementedException();
-    }
+    [JsonIgnore]
+    public virtual csCountryDbM CountryDbM { get; set; }
 
     [JsonIgnore]
-    public List<csCommentDbM> Comments {get; set;}
+    public List<csAttractionDbM> Attractions {get; set;}
+    // { 
+    // get => AttractionDbM?.ToList<IAttraction>(); 
+    // set => throw new NotImplementedException(); 
+    // }
+
+    // [JsonIgnore]
+    // public List<csCommentDbM> Comments {get; set;}
     public bool IsTestData { get; set; }
 
      public csCityDbM()

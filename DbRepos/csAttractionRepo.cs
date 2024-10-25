@@ -16,7 +16,7 @@ public class csAttractionRepo : IAttractionRepo
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
-            return await db.AttractionName.Include(a => a.CommentDbM).Take(_count).ToListAsync<IAttraction>();
+            return await db.Attractions.Include(a => a.CommentDbM).Take(_count).ToListAsync<IAttraction>();
         }
     }
     public async Task Seed(int _count)
@@ -34,7 +34,7 @@ public class csAttractionRepo : IAttractionRepo
             }
             
             
-            db.AttractionName.AddRange(attraction);
+            db.Attractions.AddRange(attraction);
             await db.SaveChangesAsync();
         }
     }

@@ -21,7 +21,7 @@ namespace Services
 
         public async Task<List<IComment>> GetCommentsAsync(int count)
         {
-            return await _context.Comments
+            return await _context.CommentText
             .Take(count)
             .Select(c => (IComment)c)
             .ToListAsync();
@@ -34,14 +34,14 @@ namespace Services
             {
                 comment.IsTestData = true;
             }
-            await _context.Comments.AddRangeAsync(comments);
+            await _context.CommentText.AddRangeAsync(comments);
             await _context.SaveChangesAsync();
         }
 
         public async Task ClearTestDataAsync()
         {
-            var testComments = _context.Comments.Where(u => u.IsTestData);
-            _context.Comments.RemoveRange(testComments);
+            var testComments = _context.CommentText.Where(u => u.IsTestData);
+            _context.CommentText.RemoveRange(testComments);
             await _context.SaveChangesAsync();
         }
 

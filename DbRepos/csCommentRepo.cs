@@ -16,7 +16,7 @@ public class csCommentRepo : ICommentRepo
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
-             return await db.Comments
+             return await db.CommentText
                 .Include(c => c.Attraction)
                 .Take(_count)
                 .Select(c => (IComment)c)
@@ -44,7 +44,7 @@ public class csCommentRepo : ICommentRepo
             }
             
             
-            db.AttractionName.AddRange(attraction);
+            db.Attractions.AddRange(attraction);
             await db.SaveChangesAsync();
         }
     }

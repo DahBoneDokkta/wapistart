@@ -9,9 +9,10 @@ namespace Models;
 
 public abstract class csCountries : ICountry, ISeed<csCountries>
 {
+    [Key]
     public virtual Guid CountryId {get; set;}
     public string CountryName {get; set;}
-    public virtual ICollection<ICity> Cities {get; set;}
+    public virtual ICollection<csCity> Cities {get; set;}
     public bool Seeded {get; set;} = false;
     public virtual csCountries Seed (csSeedGenerator _seeder)
     {

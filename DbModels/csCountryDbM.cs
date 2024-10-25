@@ -13,9 +13,11 @@ namespace DbModels
         public override Guid CountryId { get; set; }
         
         // Country has a list of cities
-        public override ICollection<ICity> Cities
+
+        [NotMapped ]
+        public override ICollection<csCity> Cities
         {
-            get => CitiesDbM.ToList<ICity>(); 
+            get => CitiesDbM.ToList<csCity>(); 
             set => throw new NotImplementedException();
         }
 

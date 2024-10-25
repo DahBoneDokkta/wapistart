@@ -1,35 +1,58 @@
 using Models;
-using Configuration;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Seido.Utilities.SeedGenerator;
 using Newtonsoft.Json;
+using Seido.Utilities.SeedGenerator;
 
-
-
-namespace DbModels;
-
-public class csAttractionDbM : csAttraction, ISeed<csAttractionDbM>
+namespace DbModels
 {
-    [Key]
-    public override Guid AttractionId { get; set; }
-    
-    [JsonIgnore]
-    public new List<csComment> Comments {get; set;}
-    public override ICollection<IComment> CommentText
-    { 
-        get => Comments?.Cast<IComment>().ToList(); 
-        set => throw new NotImplementedException(); 
-    }
-    public List<csCommentDbM> CommentDbM { get; set; }
-    public bool IsTestData { get; set; }
-    
-    [JsonIgnore]
-    public  csCityDbM CityDbM { get; set; }
-
-    public override csAttractionDbM Seed (csSeedGenerator _seeder)
+    public class csAttractionDbM : csAttraction, ISeed<csAttractionDbM>
     {
-        base.Seed (_seeder);
-        return this;
+        [Key]
+        public override Guid AttractionId { get; set; }
+        public override string Name {get; set;}
+
+        // Attraction has a list of Comments
+        [NotMapped]
+        public override ICollection<csComment> CommentText 
+        {
+            get => CommentDbM?.Cast<csComment>().ToList(); 
+            set => throw new NotImplementedException(); 
+        }
+
+        [JsonIgnore]
+        public virtual List<csCommentDbM> CommentDbM { get; set; }
+
+        // Attraction has a foreign key to City
+        // Since Attraction cannot exist without a City 
+        [NotMapped]
+        public override csCity City
+        {
+            get => CityDbM; 
+            set => throw new NotImplementedException(); 
+        }
+
+        [JsonIgnore]
+        public virtual csCityDbM CityDbM { get; set; }
+
+        [NotMapped]
+        public override csCountries Country 
+        {
+            get => CountryDbM; 
+            set => throw new NotImplementedException(); 
+        }
+
+        [JsonIgnore]
+        public virtual csCountryDbM CountryDbM { get; set; }
+
+        public bool IsTestData { get; set; }
+
+        public override csAttractionDbM Seed(csSeedGenerator _seeder)
+        {
+            base.Seed (_seeder);
+            return this;
+        }
     }
 }

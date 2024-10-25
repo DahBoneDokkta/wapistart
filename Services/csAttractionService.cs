@@ -21,7 +21,7 @@ namespace Services
 
         public async Task<List<IAttraction>> GetAttractionsAsync(int count)
         {
-            return await _context.AttractionName.Take(count).ToListAsync<IAttraction>();
+            return await _context.Attractions.Take(count).ToListAsync<IAttraction>();
         }
 
         public async Task SeedAttractionsAsync(int count)
@@ -31,14 +31,14 @@ namespace Services
             {
                 attraction.IsTestData = true;
             }
-            await _context.AttractionName.AddRangeAsync(attractions);
+            await _context.Attractions.AddRangeAsync(attractions);
             await _context.SaveChangesAsync();
         }
 
         public async Task ClearTestDataAsync()
         {
-            var testAttractions = _context.AttractionName.Where(u => u.IsTestData);
-            _context.AttractionName.RemoveRange(testAttractions);
+            var testAttractions = _context.Attractions.Where(u => u.IsTestData);
+            _context.Attractions.RemoveRange(testAttractions);
             await _context.SaveChangesAsync();
         }
 

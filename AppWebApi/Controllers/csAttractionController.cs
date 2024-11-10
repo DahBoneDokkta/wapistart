@@ -17,17 +17,18 @@ namespace AppWebApi.Controllers
     public class csAttractionController : Controller
     {
         private IAttractionService _service = null;
-        private ILogger<csAdminController> _logger = null;
+        private ILogger<csAttractionController> _logger = null;
 
-        public csAttractionController(IAttractionService service  ,ILogger<csAdminController> logger)
+        public csAttractionController(IAttractionService service  ,ILogger<csAttractionController> logger)
         {
             _service = service;
             _logger = logger;
         }
 
+        // GET: api/csAttraction
         [HttpGet()]
         [ActionName("GetAttractions")]
-        [ProducesResponseType(200, Type = typeof(List<IAttraction>))]
+        [ProducesResponseType(200, Type = typeof(List<csAttraction>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> GetAllAttractions(string count)
         {

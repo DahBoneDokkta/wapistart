@@ -11,7 +11,7 @@ public class csAttractionRepo : IAttractionRepo
 {
 
     private const string seedSource = "./friends-seeds1.json";
-
+    
     public async Task<List<IAttraction>> GetFilteredAttractionsAsync(
         int count,
         string category = null,
@@ -46,7 +46,7 @@ public class csAttractionRepo : IAttractionRepo
 
             var filterResult = await query.Take(count).ToListAsync();
 
-            return filterResult;
+            return filterResult.Cast<IAttraction>().ToList();
         }
         }
         catch(Exception ex)
@@ -55,9 +55,59 @@ public class csAttractionRepo : IAttractionRepo
         }
     }
 
-    public Task<List<IAttraction>> GetFilteredAttractionsAsync(int _count)
+    public async Task<IAttraction> GetSingleAttractionAsync(Guid id)
     {
-        throw new NotImplementedException();
+            using (var db = csMainDbContext.DbContext("sysadmin"))
+            {
+                return await db.Attractions
+                    .Include(a => a.City)
+                    .Include(a => a.CityDbM.Country)
+                    .Include(a => a.CommentDbM)
+                    .FirstOrDefaultAsync(a => a.AttractionId == id);
+                    
+            }
+    }
+
+    public async Task<List<IAttraction>> GetAttractionsWithNoCommentAsync()
+    {
+            using (var db = csMainDbContext.DbContext("sysadmin"))
+            {
+                var attractions = await db.Attractions
+                // return await db.Attractions
+                    .Include(a => a.City)
+                    .Include(a => a.CityDbM.Country)
+                    .Include(a => a.CommentDbM)
+                    .Where(a => !a.CommentDbM.Any())
+                    .ToListAsync();
+
+                return attractions.Cast<IAttraction>().ToList();
+            }
+    }
+
+    public async Task<IAttraction> DeleteAttractionAsync(Guid id)
+    {
+            using (var db = csMainDbContext.DbContext("sysadmin"))
+            {
+                var attraction = await db.Attractions.FindAsync(id);
+                if (attraction != null)
+                {
+                    db.Attractions.Remove(attraction);
+                    await db.SaveChangesAsync();
+                }
+                return attraction;
+            }
+    }
+
+    public async Task DeleteAllSeededAttractionsAsync()
+    {
+            using (var db = csMainDbContext.DbContext("sysadmin"))
+            {
+                var seededAttractions = await db.Attractions
+                    .Where(a => a.Seeded)
+                    .ToListAsync();
+                db.Attractions.RemoveRange(seededAttractions);
+                await db.SaveChangesAsync();
+            }
     }
 
     public async Task Seed(int _count)
@@ -79,11 +129,11 @@ public class csAttractionRepo : IAttractionRepo
 
                 foreach (var c in a.CommentDbM ) 
                 {
-                c.User = _seeder.FromList(users);
+                    c.User = _seeder.FromList(users);
                 }
-                foreach(var x in cities) 
+                foreach(var city in cities) 
                 {
-                x.CountryDbM = _seeder.FromList(countries);
+                    city.CountryDbM = _seeder.FromList(countries);
                 }
 
             }

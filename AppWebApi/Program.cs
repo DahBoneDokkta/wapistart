@@ -29,13 +29,11 @@ builder.Services.AddSingleton<ILoggerProvider, csInMemoryLoggerProvider>();
 #region Register csMainDbContext in DI container
 // Registrera databaskontetexten och anslutningssträngen från appsettings.json
 builder.Services.AddDbContext<csMainDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Data Source=localhost,14333;Initial Catalog=wapistart;Persist Security Info=True;User ID=sa;Pwd=skYhgS@83#aQ;Encrypt=False;")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 #endregion
 
 #region Dependency Inject
-//builder.Services.AddSingleton<IAnimalsService,csAnimalsService2>();
-// builder.Services.AddScoped<IAnimalRepo, csAnimalRepo>();
-//builder.Services.AddScoped<IAnimalsService,csAnimalServiceDb>();
+
 builder.Services.AddScoped<IAttractionRepo, csAttractionRepo>();
 builder.Services.AddScoped<IAttractionService, csAttractionService>();
 #endregion

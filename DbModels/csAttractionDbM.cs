@@ -25,8 +25,7 @@ namespace DbModels
         [JsonIgnore]
         public virtual List<csCommentDbM> CommentDbM { get; set; }
 
-        // Attraction has a foreign key to City
-        // Since Attraction cannot exist without a City 
+
         [NotMapped]
         public override ICity City
         {
@@ -36,6 +35,18 @@ namespace DbModels
 
         [JsonIgnore]
         public virtual csCityDbM CityDbM { get; set; }
+
+        public int CountryId { get; set; }
+
+        [NotMapped]
+        public override ICountry Country 
+        {
+            get => CountryDbM; 
+            set => throw new NotImplementedException(); 
+        }
+
+        [JsonIgnore]
+        public virtual csCountryDbM CountryDbM { get ; set ; }
 
 
         public override csAttractionDbM Seed(csSeedGenerator _seeder)

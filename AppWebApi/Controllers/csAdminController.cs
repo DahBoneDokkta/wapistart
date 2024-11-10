@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
+﻿using Microsoft.AspNetCore.Mvc;
+using Seido.Utilities.SeedGenerator;
 using Models;
 using Services;
 using Configuration;
-using Seido.Utilities.SeedGenerator;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppWebApi.Controllers
 {
@@ -21,55 +14,33 @@ namespace AppWebApi.Controllers
         public DbSetDetail DbSetActive { get; set; }
     }
 
+
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class csAdminController : Controller
     {
         private ILogger<csAdminController> _logger = null;
-        private csSeedGenerator _seeder = null;
-        private readonly ICountryService _countryService;
-        private readonly ICityService _cityService;
-        private readonly IAttractionService _attractionService;
-        private readonly IUserService _userService;
-        private readonly ICommentService _commentService;
 
-        public csAdminController(
-            ILogger<csAdminController> logger,
-            csSeedGenerator seeder,
-            ICountryService countryService,
-            ICityService cityService,
-            IAttractionService attractionService,
-            IUserService userService,
-            ICommentService commentService)
+
+        private csSeedGenerator _seeder = null;
+
+        public csAdminController(ILogger<csAdminController> logger)
         {
             _logger = logger;
-            _seeder = seeder;
-            _countryService = countryService;
-            _cityService = cityService;
-            _attractionService = attractionService;
-            _userService = userService;
-            _commentService = commentService;
+            _seeder = new csSeedGenerator();
         }
-        // public csAdminController(ILogger<csAdminController> logger)
-        // {
-        //     _logger = logger;
-        //     _seeder = new csSeedGenerator();
-        // }
-
-
 
         //GET: api/csAdmin/Info
         [HttpGet()]
         [ActionName("Info")]
         [ProducesResponseType(200, Type = typeof(csWapiInfo))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public IActionResult Info()
+        public async Task<IActionResult> Info()
         {
             try
             {
                 _logger.LogInformation("Endpoint Info executed");
-                var _info = new csWapiInfo
-                {
+                var _info = new csWapiInfo {
                     Environment = csAppConfig.ASPNETCOREEnvironment,
                     DbSetActive = csAppConfig.DbSetActive
                 };
@@ -78,63 +49,9 @@ namespace AppWebApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error in Info endpoint");
-                return BadRequest("An error occured while processing your request.");
-            }
-        }
-
-        //GET: api/csAdmin/Seed
-        [HttpGet()]
-        [ActionName("Seed")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> Seed(string count = "10")
-        {
-            try
-            {
-                _logger.LogInformation("Endpoint Seed executed");
-                int _count = int.Parse(count);
-
-                await _countryService.SeedCountriesAsync(_count);
-                await _cityService.SeedCitiesAsync(_count);
-                await _attractionService.SeedAttractionsAsync(_count);
-                await _userService.SeedUsersAsync(_count);
-                await _commentService.SeedCommentsAsync(_count);
-
-                return Ok("Seeding completed");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error in Seed endpoint");
-                return BadRequest("An error occured while processing your request.");
-            }
-           
-        }
-
-        //GET: api/csAdmin/ClearTestData
-        [HttpGet()]
-        [ActionName("ClearTestData")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> ClearTestData()
-        {
-            try
-            {
-                _logger.LogInformation("Endpoint ClearTestData executed");
-                
-                await _countryService.ClearTestDataAsync();
-                await _cityService.ClearTestDataAsync();
-                await _attractionService.ClearTestDataAsync();
-                await _userService.ClearTestDataAsync();
-                await _commentService.ClearTestDataAsync();
-
-                return Ok("Test data cleared");
-            }
-            catch (Exception ex)
-            {
                 _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
-            }           
+            }
         }
 
         //GET: api/csAdmin/log
@@ -150,7 +67,5 @@ namespace AppWebApi.Controllers
             }
             return Ok("No messages in log");
         }
- 
     }
 }
-

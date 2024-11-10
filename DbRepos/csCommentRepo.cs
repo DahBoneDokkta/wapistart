@@ -12,21 +12,33 @@ public class csCommentRepo : ICommentRepo
 
     private const string seedSource = "./friends-seeds1.json";
 
-    public async Task<List<IComment>> Comments(int _count)
+    public async Task<List<IComment>> GetComments(int _count)
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
              return await db.CommentText
                 .Include(c => c.Attraction)
                 .Take(_count)
-                .Select(c => (IComment)c)
+                .Cast<IComment>()
                 .ToListAsync();
         }
     }
 
-    public Task<List<IComment>> Comment(int _count)
+    public async Task<IComment> DeleteCommentAsync(Guid id)
     {
-        throw new NotImplementedException();
+        using (var db = csMainDbContext.DbContext("sysadmin"))
+        {
+            var comment = await db.CommentText.FindAsync(id);
+            if (comment == null)
+            {
+                throw new ArgumentException($"Comment with ID {id} not found.");
+            }
+
+            db.CommentText.Remove(comment);
+            await db.SaveChangesAsync();
+
+            return (IComment)comment;
+         }
     }
 
     public async Task Seed(int _count)

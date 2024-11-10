@@ -12,17 +12,16 @@ public class csCountryRepo : ICountryRepo
 
     private const string seedSource = "./friends-seeds1.json";
 
-    public async Task<List<ICountry>> Countries(int _count)
+    public async Task<List<ICountry>> GetCountries(int _count)
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
-            return await db.Countries.Include(a => a.CitiesDbM).Take(_count).ToListAsync<ICountry>();
+            return await db.Countries
+                .Include(c => c.CitiesDbM)
+                .Take(_count)
+                .Cast<ICountry>()
+                .ToListAsync();
         }
-    }
-
-    public Task<List<ICountry>> Country(int _count)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task Seed(int _count)
@@ -33,14 +32,16 @@ public class csCountryRepo : ICountryRepo
         {
             var country = _seeder.ItemsToList<csCountryDbM>(5);
             var cities = _seeder.ItemsToList<csCityDbM>(_count);
+            var attractions = _seeder.ItemsToList<csAttractionDbM>(_count);
 
-            foreach (var a in cities)
+            foreach (var city in cities)
             {
-                a.CountryDbM = _seeder.FromList(country);
+                city.CountryDbM = _seeder.FromList(country);
             }
             
             
-            db.Countries.AddRange(country);
+            db.Cities.AddRange(cities);
+            db.Attractions.AddRange(attractions);
             await db.SaveChangesAsync();
         }
     }

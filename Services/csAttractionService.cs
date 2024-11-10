@@ -1,46 +1,44 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Models;
-using DbModels;
-using DbContext;
-using Seido.Utilities.SeedGenerator;
-using Microsoft.EntityFrameworkCore;
+using DbRepos;
 
-namespace Services
+namespace Services;
+
+public class csAttractionService : IAttractionService
 {
-    public class csAttractionService : IAttractionService
+    private IAttractionRepo _repo;
+
+    public csAttractionService(IAttractionRepo repo)
     {
-        private readonly csMainDbContext _context;
-        private readonly csSeedGenerator _seeder;
+        _repo = repo;
+    }
 
-        public csAttractionService(csMainDbContext context, csSeedGenerator seeder)
-        {
-            _context = context;
-            _seeder = seeder;
-        }
+    public async Task<List<IAttraction>> RetrieveAttractionsAsync(int count) 
+    {
+        return await _repo.GetFilteredAttractionsAsync(count);
+    }
 
-        public async Task<List<IAttraction>> GetAttractionsAsync(int count)
-        {
-            return await _context.Attractions.Take(count).ToListAsync<IAttraction>();
-        }
+    public async Task<IAttraction> FetchAttractionByIdAsync(Guid id) 
+    {
+        return await _repo.GetSingleAttractionAsync(id);
+    }
 
-        public async Task SeedAttractionsAsync(int count)
-        {
-            var attractions = _seeder.ItemsToList<csAttractionDbM>(count);
-            foreach (var attraction in attractions)
-            {
-                attraction.IsTestData = true;
-            }
-            await _context.Attractions.AddRangeAsync(attractions);
-            await _context.SaveChangesAsync();
-        }
+    public async Task<List<IAttraction>> GetAttractionsWithoutCommentsAsync() 
+    {
+        return await _repo.GetAttractionsWithNoCommentAsync();
+    }
 
-        public async Task ClearTestDataAsync()
-        {
-            var testAttractions = _context.Attractions.Where(u => u.IsTestData);
-            _context.Attractions.RemoveRange(testAttractions);
-            await _context.SaveChangesAsync();
-        }
+    public async Task<IAttraction> RemoveAttractionByIdAsync(Guid id) 
+    {
+        return await _repo.DeleteAttractionAsync(id);
+    }
 
+    public async Task<IAttraction> RemoveAllSeededAttractionsAsync(bool seeded) // Korrigerat typografiskt fel
+    {
+        return await _repo.DeleteAllSeededData(seeded);
+    }
+
+    public async Task Seed(int count) 
+    {
+        await _repo.Seed(count);
     }
 }

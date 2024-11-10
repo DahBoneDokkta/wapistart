@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using Seido.Utilities.SeedGenerator;
+using System.Linq;
 
 namespace DbModels
 {
@@ -12,13 +13,12 @@ namespace DbModels
     {
         [Key]
         public override Guid AttractionId { get; set; }
-        public override string Name {get; set;}
 
         // Attraction has a list of Comments
         [NotMapped]
-        public override ICollection<csComment> CommentText 
+        public override List<IComment> CommentText
         {
-            get => CommentDbM?.Cast<csComment>().ToList(); 
+            get => CommentDbM?.Cast<IComment>().ToList(); 
             set => throw new NotImplementedException(); 
         }
 
@@ -28,7 +28,7 @@ namespace DbModels
         // Attraction has a foreign key to City
         // Since Attraction cannot exist without a City 
         [NotMapped]
-        public override csCity City
+        public override ICity City
         {
             get => CityDbM; 
             set => throw new NotImplementedException(); 
@@ -37,17 +37,6 @@ namespace DbModels
         [JsonIgnore]
         public virtual csCityDbM CityDbM { get; set; }
 
-        [NotMapped]
-        public override csCountries Country 
-        {
-            get => CountryDbM; 
-            set => throw new NotImplementedException(); 
-        }
-
-        [JsonIgnore]
-        public virtual csCountryDbM CountryDbM { get; set; }
-
-        public bool IsTestData { get; set; }
 
         public override csAttractionDbM Seed(csSeedGenerator _seeder)
         {

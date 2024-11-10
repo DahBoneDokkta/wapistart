@@ -9,39 +9,53 @@ using Models;
 using Services;
 using Configuration;
 using Seido.Utilities.SeedGenerator;
+using AppWebApi.Controllers;
 
 namespace Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class csAttractionController : ControllerBase
+    public class csUserController : ControllerBase
     {
-        private readonly IAttractionService _attractionService;
+        private IUserService _userService = null;
+        private ILogger<csAdminController> _logger = null;
 
-        public csAttractionController(IAttractionService attractionService)
+        public csUserController(IUserService userService, ILogger<csAdminController>logger)
         {
-            _attractionService = attractionService;
+            _userService = userService;
+            _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<IAttraction>>> GetAttractions(int count)
-        {
-            var attractions = await _attractionService.GetAttractionsAsync(count);
-            return Ok(attractions);
-        }
+        // [HttpGet]
+        // public async Task<ActionResult<List<IUser>>> GetUsers(int count)
+        // {
+        //     var users = await _userService.GetUsersAsync(count);
+        //     return Ok(users);
+        // }
 
-        [HttpPost("seed")]
-        public async Task<IActionResult> SeedAttractions(int count)
-        {
-            await _attractionService.SeedAttractionsAsync(count);
-            return Ok();
-        }
+        //GET: api/csAdmin/Users
+        // [HttpGet()]
+        // [ActionName("GetAllUsers")]
+        // [ProducesResponseType(200, Type = typeof(List<IUser>))]
+        // [ProducesResponseType(400, Type = typeof(string))]
+        // public async Task<IActionResult> GetAllUsers(string count)
+        // {
+        //     try
+        //     {
+        //         _logger.LogInformation("Endpoint Users executed");
+        //         var _count = int.Parse(count);
 
-        [HttpDelete("clear")]
-        public async Task<IActionResult> ClearTestData()
-        {
-            await _attractionService.ClearTestDataAsync();
-            return Ok("Test data cleared");
-        }
+        //         var users = await _userService.GetAllUsers(_count);
+
+        //         return Ok(users);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError(ex.Message);
+        //         return BadRequest(ex.Message);
+        //     }
+        // }
+
+
     }
 }

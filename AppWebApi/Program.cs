@@ -36,12 +36,8 @@ builder.Services.AddDbContext<csMainDbContext>(options =>
 //builder.Services.AddSingleton<IAnimalsService,csAnimalsService2>();
 // builder.Services.AddScoped<IAnimalRepo, csAnimalRepo>();
 //builder.Services.AddScoped<IAnimalsService,csAnimalServiceDb>();
-builder.Services.AddScoped<ICountryService, csCountryService>();
-builder.Services.AddScoped<ICityService, csCityService>();
+builder.Services.AddScoped<IAttractionRepo, csAttractionRepo>();
 builder.Services.AddScoped<IAttractionService, csAttractionService>();
-builder.Services.AddScoped<IUserService, csUserService>();
-builder.Services.AddScoped<ICommentService, csCommentService>();
-builder.Services.AddScoped<csSeedGenerator>();
 #endregion
 
 var app = builder.Build();

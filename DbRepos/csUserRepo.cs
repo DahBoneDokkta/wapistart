@@ -12,7 +12,7 @@ public class csUserRepo : IUserRepo
 
     private const string seedSource = "./friends-seeds1.json";
 
-    public async Task<List<IUser>> Users(int _count)
+    public async Task<List<IUser>> GetUsers(int _count)
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
@@ -24,9 +24,21 @@ public class csUserRepo : IUserRepo
         }
     }
 
-    public Task<List<IUser>> User(int _count)
+    public async Task<IUser> DeleteUserAsync(Guid id) 
     {
-        throw new NotImplementedException();
+        using (var db = csMainDbContext.DbContext("sysadmin")) 
+        {
+            var _query = db.Users.Where(a => a.UserId == id);
+            var _deletedUser = await _query.FirstOrDefaultAsync();
+
+            if (_deletedUser is null) 
+            {
+                throw new ArgumentException($"The User with ID {id} does not exist.");   
+            }
+            db.Users.Remove(_deletedUser);
+            await db.SaveChangesAsync();
+            return _deletedUser;
+        }
     }
 
     public async Task Seed(int _count)
@@ -40,7 +52,7 @@ public class csUserRepo : IUserRepo
 
             foreach (var user in users)
             {
-                user.CommentText = comments.Cast<csComment>().ToList();;
+                user.CommentText = comments.Cast<IComment>().ToList();;
             }
             
             

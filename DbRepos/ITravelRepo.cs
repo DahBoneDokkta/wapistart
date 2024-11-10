@@ -1,32 +1,47 @@
 using Models;
-using DbModels;
-using DbContext;
-namespace DbRepos;
-using Seido.Utilities.SeedGenerator;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public interface ICityRepo
+namespace DbRepos
 {
-    Task<List<ICity>> Cities(int _count);
-    Task Seed(int _count);
-}
-public interface ICountryRepo
-{
-    public Task<List<ICountry>> Country(int _count);
-    public Task Seed(int _count);
-}
-public interface IUserRepo
-{
-    public Task<List<IUser>> User(int _count);
-    public Task Seed(int _count);
-}
-public interface ICommentRepo
-{
-    public Task<List<IComment>> Comment(int _count);
-    public Task Seed(int _count);
-}
-public interface IAttractionRepo
-{
-    public Task<List<IAttraction>> Attraction(int _count);
-    public Task Seed(int _count);
+    public interface ICityRepo
+    {
+        Task<List<ICity>> GetCities(int count);
+        Task<ICity> DeleteCityAsync(Guid id);
+        Task Seed(int count);
+    }
+
+    public interface ICountryRepo
+    {
+        Task<List<ICountry>> GetCountries(int count);
+        Task Seed(int count);
+    }
+
+    public interface IUserRepo
+    {
+        Task<List<IUser>> GetUsers(int count);
+        Task<IUser> DeleteUserAsync(Guid id);
+        Task Seed(int count);
+    }
+
+    public interface ICommentRepo
+    {
+        Task<List<IComment>> GetComments(int count);
+        Task<IComment> DeleteCommentAsync(Guid id);
+        Task Seed(int count);
+    }
+
+    public interface IAttractionRepo
+    {
+        Task<List<IAttraction>> GetFilteredAttractionsAsync(
+            int count,
+            string category = null,
+            string description = null,
+            string name = null,
+            string title = null,
+            string city = null,
+            string country = null);
+        Task Seed(int count);
+    }
 }

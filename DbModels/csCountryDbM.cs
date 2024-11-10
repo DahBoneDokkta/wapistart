@@ -13,17 +13,15 @@ namespace DbModels
         public override Guid CountryId { get; set; }
         
         // Country has a list of cities
-
         [NotMapped ]
-        public override ICollection<csCity> Cities
+        public override List<ICity> Cities
         {
-            get => CitiesDbM.ToList<csCity>(); 
+            get => CitiesDbM.Cast<ICity>().ToList(); 
             set => throw new NotImplementedException();
         }
 
         [JsonIgnore]
         public List<csCityDbM> CitiesDbM { get; set; }
-        public bool IsTestData { get; set; }
 
         public override csCountryDbM Seed(csSeedGenerator _seeder)
         {

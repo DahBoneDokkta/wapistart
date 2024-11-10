@@ -17,11 +17,10 @@ public class csAttraction : IAttraction, ISeed<csAttraction>
     public virtual string Title {get; set;}
     public virtual string Description {get; set;}
     
-    public virtual ICollection<csComment> CommentText {get; set;}
-    public virtual csCity City {get; set;}
-    public virtual csCountries Country {get; set;}
+    public virtual List<IComment> CommentText {get; set;}
+    public virtual ICity City {get; set;}
+    public virtual ICountry Country {get; set;}
     public bool Seeded {get; set;} = false;
-    //public ICollection<IComment> CommentText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public virtual csAttraction Seed (csSeedGenerator _seeder)
     {

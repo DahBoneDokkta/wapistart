@@ -1,6 +1,7 @@
 using Models;
 using DbModels;
 using DbContext;
+using DbRepos;
 using Seido.Utilities.SeedGenerator;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,20 +16,8 @@ namespace DbRepos
     {
         private const string seedSource = "./friends-seeds1.json";
 
-        public async Task<List<ICity>> Cities(int _count)
-        {
-            using (var db = csMainDbContext.DbContext("sysadmin"))
-            {
-                return await db.Cities
-                    .Include(c => c.CountryDbM)
-                    .Include(c => c.Attractions)
-                    .Take(_count)
-                    .Cast<ICity>()
-                    .ToListAsync();
-            }
-        }
-
-        public async Task<List<ICity>> City(int count)
+        // Slå ihop Cities och City till en metod för att hämta städer
+        public async Task<List<ICity>> GetCities(int count)
         {
             using (var db = csMainDbContext.DbContext("sysadmin"))
             {
@@ -45,25 +34,23 @@ namespace DbRepos
         {
             using (var db = csMainDbContext.DbContext("sysadmin"))
             {
-                var query = db.Cities.Where(a => a.CityId == id);
-                var deletedCity = await query.FirstOrDefaultAsync<csCityDbM>();
-
-                if (deletedCity is null)
+                var cityToDelete = await db.Cities.FindAsync(id);
+                if (cityToDelete is null)
                 {
-                    throw new ArgumentException($"The City with {id} does not exist.");
+                    throw new ArgumentException($"The City with ID {id} does not exist.");
                 }
 
                 try
                 {
-                    db.Cities.Remove(deletedCity);
+                    db.Cities.Remove(cityToDelete);
                     await db.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException("Something went wrong.", ex);
+                    throw new InvalidOperationException("An error occurred while trying to delete the city.", ex);
                 }
 
-                return deletedCity;
+                return cityToDelete;
             }
         }
 
@@ -75,7 +62,6 @@ namespace DbRepos
             {
                 var countries = seeder.ItemsToList<csCountryDbM>(count);
                 var cities = seeder.ItemsToList<csCityDbM>(count);
-                var attractions = seeder.ItemsToList<csAttractionDbM>(count);
 
                 foreach (var city in cities)
                 {

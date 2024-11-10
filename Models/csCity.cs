@@ -15,11 +15,10 @@ public class csCity : ICity, ISeed<csCity>
     public int ZipCode {get; set;}
     public string Address {get; set;}
 
-    public virtual csCountries Country {get; set;}
+    public virtual ICountry Country {get; set;}
     public bool Seeded {get; set;} = false;
 
-    public virtual List<csAttraction> Attractions {get; set;}
-    public virtual List<csComment> CommentText {get; set;}
+    public virtual List<IAttraction> Attractions {get; set;}
 
     public virtual csCity Seed (csSeedGenerator _seeder)
     {

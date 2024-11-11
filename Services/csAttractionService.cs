@@ -12,12 +12,12 @@ public class csAttractionService : IAttractionService
         _repo = repo;
     }
 
-    public async Task<List<IAttraction>> RetrieveAttractionsAsync(int count) 
+    public async Task<List<IAttraction>> GetFilteredAttractionsAsync(int count, string category = null, string description = null, string name = null, string title = null, string city = null, string country = null) 
     {
-        return await _repo.GetFilteredAttractionsAsync(count);
+        return await _repo.GetFilteredAttractionsAsync(count, category, description, name, title, city, country);
     }
 
-    public async Task<IAttraction> FetchAttractionByIdAsync(Guid id) 
+    public async Task<IAttraction> GetSingleAttractionAsync(Guid id) 
     {
         return await _repo.GetSingleAttractionAsync(id);
     }
@@ -27,14 +27,14 @@ public class csAttractionService : IAttractionService
         return await _repo.GetAttractionsWithNoCommentAsync();
     }
 
-    public async Task<IAttraction> RemoveAttractionByIdAsync(Guid id) 
+    public async Task<IAttraction> DeleteAttractionAsync(Guid id) 
     {
         return await _repo.DeleteAttractionAsync(id);
     }
 
-    public async Task<IAttraction> RemoveAllSeededAttractionsAsync(bool seeded) // Korrigerat typografiskt fel
+    public async Task DeleteAllSeededAttractionsAsync()
     {
-        return await _repo.DeleteAllSeededData(seeded);
+        await _repo.DeleteAllSeededAttractionsAsync();
     }
 
     public async Task Seed(int count) 

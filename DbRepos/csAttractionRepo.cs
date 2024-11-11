@@ -80,7 +80,7 @@ public class csAttractionRepo : IAttractionRepo
                     .Where(a => !a.CommentDbM.Any())
                     .ToListAsync();
 
-                return attractions.Cast<IAttraction>().ToList();
+                return attractions.Select(a => (IAttraction)a).ToList();
             }
     }
 
@@ -98,16 +98,18 @@ public class csAttractionRepo : IAttractionRepo
             }
     }
 
+    // public async Task DeleteAllSeededAttractionsAsync()
     public async Task DeleteAllSeededAttractionsAsync()
     {
-            using (var db = csMainDbContext.DbContext("sysadmin"))
-            {
-                var seededAttractions = await db.Attractions
-                    .Where(a => a.Seeded)
-                    .ToListAsync();
-                db.Attractions.RemoveRange(seededAttractions);
-                await db.SaveChangesAsync();
-            }
+        using (var db = csMainDbContext.DbContext("sysadmin"))
+        {
+            var seededAttractions = await db.Attractions
+                .Where(a => a.Seeded)
+                .ToListAsync();
+
+            db.Attractions.RemoveRange(seededAttractions);
+            await db.SaveChangesAsync();
+        }
     }
 
     public async Task Seed(int _count)

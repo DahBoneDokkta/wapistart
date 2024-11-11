@@ -43,8 +43,8 @@ namespace DbRepos
             string city = null,
             string country = null);
 
-        Task<List<IAttraction>> GetSingleAttractionAsync(Guid id);
-        Task<IAttraction> GetAttractionsWithNoCommentAsync();
+        Task<IAttraction> GetSingleAttractionAsync(Guid id);
+        Task<List<IAttraction>> GetAttractionsWithNoCommentAsync();
         Task<IAttraction> DeleteAttractionAsync(Guid id);
         Task DeleteAllSeededAttractionsAsync();
         Task Seed(int count);

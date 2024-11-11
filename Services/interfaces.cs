@@ -20,11 +20,11 @@ public interface ICommentService
 
 public interface IAttractionService
 {
-    Task<List<IAttraction>> GetFilteredAttractionsAsync(int count);
+    Task<List<IAttraction>> GetFilteredAttractionsAsync(int count, string category = null, string description = null, string name = null, string title = null, string city = null, string country = null);
     Task<IAttraction> GetSingleAttractionAsync(Guid id);
     Task<List<IAttraction>> GetAttractionsWithoutCommentsAsync();
-    Task<IAttraction> RemoveAttractionByIdAsync(Guid id);
-    Task<IAttraction> RemoveAllSeededAttractionsAsync(bool isSeeded);
+    Task<IAttraction> DeleteAttractionAsync(Guid id);
+    Task DeleteAllSeededAttractionsAsync();
     Task Seed(int _count);
 }
 

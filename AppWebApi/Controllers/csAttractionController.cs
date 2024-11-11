@@ -37,7 +37,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation("Endpoint All Attraction executed");
                 var _count = int.Parse(count);
 
-                var attractions = await _service.RetrieveAttractionsAsync(_count);
+                var attractions = await _service.GetFilteredAttractionsAsync(_count);
                 return Ok(attractions);
             }
             catch (Exception ex)

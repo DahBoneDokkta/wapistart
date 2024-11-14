@@ -25,7 +25,6 @@ namespace DbModels
         [JsonIgnore]
         public virtual List<csCommentDbM> CommentDbM { get; set; }
 
-
         [NotMapped]
         public override ICity City
         {

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using DbContext;
 using Microsoft.EntityFrameworkCore;
 using Seido.Utilities.SeedGenerator;
+using DbModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,11 @@ builder.Services.AddDbContext<csMainDbContext>(options =>
 
 builder.Services.AddScoped<IAttractionRepo, csAttractionRepo>();
 builder.Services.AddScoped<IAttractionService, csAttractionService>();
+
+// builder.Services.AddScoped<ICityRepo, csCityRepo>();
+// builder.Services.AddScoped<ICityService, csCityService>();
+
+
 #endregion
 
 var app = builder.Build();

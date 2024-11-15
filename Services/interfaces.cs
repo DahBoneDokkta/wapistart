@@ -8,12 +8,14 @@ namespace Services;
 public interface IUserService 
 {
     public Task<List<IUser>> GetUsersAsync (int _count);
+    public Task<IUser> DeleteUserAsync(Guid id);
     public Task Seed(int _count);
 }
 
 public interface ICommentService
 {
     public Task<List<IComment>> GetCommentsAsync(int _count);
+    public Task<IComment> DeleteCommentAsync(Guid id);
     public Task Seed(int _count);
 
 }

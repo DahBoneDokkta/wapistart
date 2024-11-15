@@ -43,6 +43,12 @@ builder.Services.AddScoped<ICityService, csCityService>();
 
 builder.Services.AddScoped<ICountryRepo, csCountryRepo>();
 builder.Services.AddScoped<ICountryService, csCountryService>();
+
+builder.Services.AddScoped<IUserRepo, csUserRepo>();
+builder.Services.AddScoped<IUserService, csUserService>();
+
+builder.Services.AddScoped<ICommentRepo, csCommentRepo>();
+builder.Services.AddScoped<ICommentService, csCommentService>();
 #endregion
 
 var app = builder.Build();

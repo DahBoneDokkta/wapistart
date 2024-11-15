@@ -1,5 +1,4 @@
 using Models;
-using Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Seido.Utilities.SeedGenerator;

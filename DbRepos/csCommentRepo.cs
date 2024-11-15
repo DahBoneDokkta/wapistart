@@ -18,6 +18,7 @@ public class csCommentRepo : ICommentRepo
         {
              return await db.CommentText
                 .Include(c => c.Attraction)
+                .Include(c => c.User)
                 .Take(_count)
                 .Cast<IComment>()
                 .ToListAsync();
@@ -57,6 +58,7 @@ public class csCommentRepo : ICommentRepo
             
             
             db.Attractions.AddRange(attraction);
+            db.CommentText.AddRange(comments);
             await db.SaveChangesAsync();
         }
     }

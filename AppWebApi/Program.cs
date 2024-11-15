@@ -38,10 +38,11 @@ builder.Services.AddDbContext<csMainDbContext>(options =>
 builder.Services.AddScoped<IAttractionRepo, csAttractionRepo>();
 builder.Services.AddScoped<IAttractionService, csAttractionService>();
 
-// builder.Services.AddScoped<ICityRepo, csCityRepo>();
-// builder.Services.AddScoped<ICityService, csCityService>();
+builder.Services.AddScoped<ICityRepo, csCityRepo>();
+builder.Services.AddScoped<ICityService, csCityService>();
 
-
+builder.Services.AddScoped<ICountryRepo, csCountryRepo>();
+builder.Services.AddScoped<ICountryService, csCountryService>();
 #endregion
 
 var app = builder.Build();

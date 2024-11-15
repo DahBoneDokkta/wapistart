@@ -30,7 +30,8 @@ public interface IAttractionService
 
 public interface ICityService
 {
-    public Task<List<ICity>> GetCitiesAsync(int _count);
+    public Task<List<ICity>> RandomCity(int _count);
+    public Task<ICity> DeleteCity(Guid id);
     public Task Seed(int _count);
 }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Models;
 using Services;
@@ -16,8 +17,8 @@ namespace AppWebApi.Controllers
     [Route("api/[controller]")]
     public class csAttractionController : Controller
     {
-        private IAttractionService _service = null;
-        private ILogger<csAttractionController> _logger = null;
+        private readonly IAttractionService _service = null;
+        private readonly ILogger<csAttractionController> _logger = null;
 
         public csAttractionController(IAttractionService service  ,ILogger<csAttractionController> logger)
         {
@@ -26,23 +27,30 @@ namespace AppWebApi.Controllers
         }
 
         // GET: api/csAttraction
-        [HttpGet()]
+        [HttpGet("GetAllAttractions")]
         [ActionName("GetAttractions")]
         [ProducesResponseType(200, Type = typeof(List<csAttraction>))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> GetAllAttractions(string count)
+        public async Task<IActionResult> GetAllAttractions([FromQuery] string count)
         {
             try
             {
                 _logger.LogInformation("Endpoint All Attraction executed");
-                var _count = int.Parse(count);
+
+                if (!int.TryParse(count, out var _count))
+                {
+                    _logger.LogWarning("Invalid count value provided: {count}", count);
+                    return BadRequest("Count must be a valid integer.");
+                }
+                
+                // var _count = int.Parse(count);
 
                 var attractions = await _service.GetFilteredAttractionsAsync(_count);
                 return Ok(attractions);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError("Error in GettAllAttractions: {message}", ex.Message);
                 return BadRequest(ex.Message);
             }
         }

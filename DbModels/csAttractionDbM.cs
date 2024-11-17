@@ -14,6 +14,9 @@ namespace DbModels
         [Key]
         public override Guid AttractionId { get; set; }
 
+        [JsonIgnore]
+        public virtual List<csCommentDbM> CommentDbM { get; set; }
+
         // Attraction has a list of Comments
         [NotMapped]
         public override List<IComment> CommentText
@@ -23,7 +26,8 @@ namespace DbModels
         }
 
         [JsonIgnore]
-        public virtual List<csCommentDbM> CommentDbM { get; set; }
+        public Guid CityId { get; set; }
+        public virtual csCityDbM CityDbM { get; set; }
 
         [NotMapped]
         public override ICity City
@@ -33,9 +37,7 @@ namespace DbModels
         }
 
         [JsonIgnore]
-        public virtual csCityDbM CityDbM { get; set; }
-
-        public int CountryId { get; set; }
+        public virtual csCountryDbM CountryDbM { get ; set ; }
 
         [NotMapped]
         public override ICountry Country 
@@ -44,9 +46,7 @@ namespace DbModels
             set => throw new NotImplementedException(); 
         }
 
-        [JsonIgnore]
-        public virtual csCountryDbM CountryDbM { get ; set ; }
-
+        public int CountryId { get; set; }
 
         public override csAttractionDbM Seed(csSeedGenerator _seeder)
         {

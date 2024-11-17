@@ -4,6 +4,7 @@ using Seido.Utilities.SeedGenerator;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models;
 
@@ -17,8 +18,11 @@ public class csAttraction : IAttraction, ISeed<csAttraction>
     public virtual string Title {get; set;}
     public virtual string Description {get; set;}
     
+    [NotMapped]
     public virtual List<IComment> CommentText {get; set;}
+    [NotMapped]
     public virtual ICity City {get; set;}
+    [NotMapped]
     public virtual ICountry Country {get; set;}
     public bool Seeded {get; set;} = false;
 

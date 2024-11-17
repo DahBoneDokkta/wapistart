@@ -84,6 +84,11 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         #endregion
         
         base.OnModelCreating(modelBuilder);
+
+        // modelBuilder.Entity<csAttractionDbM>()
+        //     .HasOne(a => a.City)
+        //     .WithMany(c => c.Attractions)
+        //     .HasForeignKey(a => a.CityId);
     }
 
     #region DbContext for some popular databases

@@ -36,7 +36,9 @@ namespace DbModels
         }
 
         // ForeignKey till User
+        [JsonIgnore]
         [ForeignKey("UserId")]
+        public Guid? UserId {get; set;}
         public csUserDbM UserDbM { get; set; }
 
         public override csCommentDbM Seed(csSeedGenerator _seeder)

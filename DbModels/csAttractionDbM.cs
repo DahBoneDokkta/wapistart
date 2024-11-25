@@ -45,7 +45,7 @@ namespace DbModels
         [ForeignKey("CountryId")]
         public virtual csCountryDbM CountryDbM { get ; set ; }
 
-        public int CountryId {get; set;}
+        public Guid CountryId {get; set;}
 
         [NotMapped]
         public override ICountry Country 

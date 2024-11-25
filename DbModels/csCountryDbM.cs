@@ -11,17 +11,18 @@ namespace DbModels
     {
         [Key]
         public override Guid CountryId { get; set; }
-        
-        // Country has a list of cities
-        [NotMapped ]
+
+        // Lista med städer som tillhör landet
+        [JsonIgnore]
+        public List<csCityDbM> CitiesDbM { get; set; } = new List<csCityDbM>();
+
+        // Ignorera gränssnittsegenskapen för EF
+        [NotMapped]
         public override List<ICity> Cities
         {
-            get => CitiesDbM.Cast<ICity>().ToList(); 
+            get => CitiesDbM.Cast<ICity>().ToList();
             set => throw new NotImplementedException();
         }
-
-        [JsonIgnore]
-        public List<csCityDbM> CitiesDbM { get; set; }
 
         public override csCountryDbM Seed(csSeedGenerator _seeder)
         {

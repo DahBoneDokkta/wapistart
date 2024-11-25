@@ -10,7 +10,7 @@ namespace Models;
 public abstract class csCountries : ICountry, ISeed<csCountries>
 {
     [Key]
-    public virtual Guid CountryId {get; set;}
+    public virtual Guid CountryId {get; set;} = Guid.NewGuid();
     public string CountryName {get; set;}
     public virtual List<ICity> Cities {get; set;}
     public bool Seeded {get; set;} = false;

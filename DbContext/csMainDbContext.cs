@@ -85,10 +85,49 @@ public class csMainDbContext : Microsoft.EntityFrameworkCore.DbContext
         
         base.OnModelCreating(modelBuilder);
 
-        // modelBuilder.Entity<csAttractionDbM>()
-        //     .HasOne(a => a.City)
-        //     .WithMany(c => c.Attractions)
-        //     .HasForeignKey(a => a.CityId);
+        #region Relationskonfiguration
+
+        // Relationen mellan Attraction och City (1:M)
+        modelBuilder.Entity<csAttractionDbM>()
+            .HasOne(a => a.CityDbM)
+            .WithMany(c => c.AttractionDbM)
+            .HasForeignKey(a => a.CityId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relationen mellan Comment och Attraction (M:1)
+        modelBuilder.Entity<csCommentDbM>()
+            .HasOne(c => c.AttractionDbM) // Comment har en referens till User
+            .WithMany(a => a.CommentDbM) // User kan ha många Comments
+            .HasForeignKey(c => c.AttractionId) // Foreign key
+            .OnDelete(DeleteBehavior.Restrict);  // Om en Attraction tas bort, tas alla kommentarer bort
+
+        //  // Relationen mellan Comment och User (M:1)
+        // modelBuilder.Entity<csCommentDbM>()
+        //     .HasOne(c => c.UserDbM)  // Comment har en referens till User
+        //     .WithMany(u => u.CommentText)  // User kan ha många Comments
+        //     .HasForeignKey(c => c.UserId)  // Utländsk nyckel
+        //     .OnDelete(DeleteBehavior.Cascade);  // Om en User tas bort, tas alla kommentarer bort
+
+        #endregion
+
+        #region Övriga konfigurationer
+
+        // Definiera att vissa egenskaper ska vara obligatoriska eller ha unika värden
+        modelBuilder.Entity<csAttractionDbM>()
+            .Property(a => a.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        modelBuilder.Entity<csComment>()
+            .Property(c => c.CommentText)
+            .IsRequired()
+            .HasMaxLength(1000);
+
+        // // Gör det möjligt att skapa en "keyless" entitet (om relevant)
+        // modelBuilder.Entity<csSomeKeylessEntity>()
+        //     .HasNoKey();
+
+        #endregion
     }
 
     #region DbContext for some popular databases

@@ -10,7 +10,7 @@ namespace Models;
 public class csCity : ICity, ISeed<csCity>
 {
     [Key]
-    public virtual Guid CityId {get; set;}
+    public virtual Guid CityId {get; set;} = Guid.NewGuid();
     public virtual string Name {get; set;}
     public int ZipCode {get; set;}
     public string Address {get; set;}

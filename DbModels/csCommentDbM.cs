@@ -1,41 +1,53 @@
 using Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Seido.Utilities.SeedGenerator;
 using Newtonsoft.Json;
 
-
-
-namespace DbModels;
-
-public class csCommentDbM : csComment, ISeed<csCommentDbM>
+namespace DbModels
 {
-    [Key]
-    public override Guid CommentId { get; set; }
-    
-    [NotMapped]
-    public override string CommentText 
-    { 
-        get => AttractionDbM?.ToString();
-        set => throw new NotImplementedException(); }
-
-    [JsonIgnore]
-    public  csAttractionDbM AttractionDbM { get; set; }
-
-    // [ForeignKey("CityId")]
-    // public csCityDbM City {get; set;}
-
-    [ForeignKey("UserId")]
-    public override csUser User {get; set;}
-
-    public override csCommentDbM Seed (csSeedGenerator _seeder)
+    public class csCommentDbM : csComment, ISeed<csCommentDbM>
     {
-        base.Seed (_seeder);
-        return this;
-    }
+        [Key]
+        public override Guid CommentId { get; set; }
 
-    csCommentDbM ISeed<csCommentDbM>.Seed(csSeedGenerator seedGenerator)
-    {
-        return this;
+        public Guid AttractionId { get; set; }
+
+        // Mappar från IAttraction till csAttractionDbM
+        [NotMapped]
+        public override IAttraction Attraction
+        {
+            get => AttractionDbM; 
+            set => AttractionDbM = value as csAttractionDbM; // Här mappas interface till konkret typ
+        }
+
+        // Här definierar vi den konkreta relationen till AttractionDbM
+        [JsonIgnore]
+        [ForeignKey("AttractionId")]
+        public csAttractionDbM AttractionDbM { get; set; }
+
+        // Mappning från IUser till csUserDbM
+        [NotMapped]
+        public override IUser User
+        {
+            get => UserDbM; 
+            set => UserDbM = value as csUserDbM;
+        }
+
+        // ForeignKey till User
+        [ForeignKey("UserId")]
+        public csUserDbM UserDbM { get; set; }
+
+        public override csCommentDbM Seed(csSeedGenerator _seeder)
+        {
+            base.Seed(_seeder);
+            return this;
+        }
+
+        csCommentDbM ISeed<csCommentDbM>.Seed(csSeedGenerator seedGenerator)
+        {
+            return this;
+        }
     }
 }

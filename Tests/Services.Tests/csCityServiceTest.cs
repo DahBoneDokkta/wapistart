@@ -1,4 +1,3 @@
-using Xunit;
 using NSubstitute;
 using Services;
 using DbRepos;
@@ -6,9 +5,12 @@ using Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Services.Tests
 {
+    [TestClass]
     public class csCityServiceTests
     {
         private readonly csCityService _service;
@@ -20,7 +22,7 @@ namespace Services.Tests
             _service = new csCityService(_repMock);
         }
 
-        [Fact]
+        [TestMethod]
         
         public async Task RandomCity_ReturnsListOfCities()
         {

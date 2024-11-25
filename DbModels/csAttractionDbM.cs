@@ -25,9 +25,14 @@ namespace DbModels
             set => throw new NotImplementedException(); 
         }
 
-        [JsonIgnore]
+        
         public Guid CityId { get; set; }
+
+        [JsonIgnore]
+        [ForeignKey("CityId")]
         public virtual csCityDbM CityDbM { get; set; }
+
+        // public Guid CityId {get; set;}
 
         [NotMapped]
         public override ICity City
@@ -37,7 +42,10 @@ namespace DbModels
         }
 
         [JsonIgnore]
+        [ForeignKey("CountryId")]
         public virtual csCountryDbM CountryDbM { get ; set ; }
+
+        public int CountryId {get; set;}
 
         [NotMapped]
         public override ICountry Country 
@@ -46,7 +54,7 @@ namespace DbModels
             set => throw new NotImplementedException(); 
         }
 
-        public int CountryId { get; set; }
+        // public int CountryId { get; set; }
 
         public override csAttractionDbM Seed(csSeedGenerator _seeder)
         {

@@ -16,9 +16,9 @@ public class csCityDbM : csCity, ISeed<csCityDbM>
     public override Guid CityId { get; set; }
 
     [NotMapped]
-    public override List <IAttraction> Attractions 
+    public override List <csAttraction> Attractions 
     {
-        get => AttractionDbM?.Cast<IAttraction>().ToList();
+        get => AttractionDbM?.Cast<csAttraction>().ToList();
         set => throw new NotImplementedException();
     }
 

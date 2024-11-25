@@ -16,6 +16,9 @@ namespace Services.Tests
         private readonly csCityService _service;
         private readonly ICityRepo _repMock;
 
+        [TestInitialize]
+        public void Setup()
+
         public csCityServiceTests()
         {
             _repMock = Substitute.For<ICityRepo>();
@@ -35,10 +38,10 @@ namespace Services.Tests
             _repMock.GetCities(Arg.Any<int>()).Returns(cities);
 
             // Act
-            virtual result = await _service.RandomCity(2);
+            var result = await _service.RandomCity(2);
 
             // Assert
-            Assert.Equal(2, result.Count);
+            Assert.AreEqual(2, result.Count);
         }
         
         

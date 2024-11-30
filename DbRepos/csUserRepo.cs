@@ -12,7 +12,7 @@ public class csUserRepo : IUserRepo
 
     private const string seedSource = "./friends-seeds1.json";
 
-    public async Task<List<IUser>> GetUsers(int _count)
+    public async Task<List<IUser>> GetUsersAsync(int _count)
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
@@ -60,5 +60,17 @@ public class csUserRepo : IUserRepo
             await db.SaveChangesAsync();
         }
     }
+
+        public async Task<List<IUser>> GetAllUsersAsync(int count)
+        {
+            using (var db = csMainDbContext.DbContext("sysadmin"))
+            {
+                return await db.Users
+                    .Include(u => u.Comments)
+                    .Take(count)
+                    .Select(c => (IUser)c)
+                    .ToListAsync();
+            }
+        }
 
 }

@@ -16,11 +16,23 @@ namespace Services
         {
             try
             {
-                return await _repo.GetUsers(count);
+                return await _repo.GetUsersAsync(count);
             }
             catch (Exception ex)
             {
                 throw new Exception("Error! Could not get users.", ex);
+            }
+        }
+
+        public async Task<List<IUser>> GetAllUsersAsync(int count)
+        {
+            try
+            {
+                return await _repo.GetAllUsersAsync(count);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error! Could not get all users.", ex);
             }
         }
 

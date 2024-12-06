@@ -151,7 +151,7 @@ public class csAttractionRepo : IAttractionRepo
 
                 foreach (var c in a.CommentDbM ) 
                 {
-                    c.User = _seeder.FromList(users);
+                    c.UserDbM = _seeder.FromList(users);
                 }
 
             }

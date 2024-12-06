@@ -25,10 +25,12 @@ public class csAttractionRepo : IAttractionRepo
         {
             using (var db = csMainDbContext.DbContext("sysadmin"))
             {
-            IQueryable<IAttraction> query = db.Attractions.AsNoTracking()
-            .Include(a => a.City)
-            .Include(a => a.CityDbM.Country)
-            .Include(a => a.CommentDbM);
+            
+            var query = db.Attractions.AsQueryable();
+            // IQueryable<IAttraction> query = db.Attractions.AsNoTracking()
+            // .Include(a => a.City)
+            // .Include(a => a.CityDbM.Country)
+            // .Include(a => a.CommentDbM);
 
             // Filtrering
             if (!string.IsNullOrEmpty(category))
@@ -43,8 +45,15 @@ public class csAttractionRepo : IAttractionRepo
                 query = query.Where(a => a.City.Name.ToLower().Contains(city.ToLower()));
             if (!string.IsNullOrEmpty(city))
                 query = query.Where(a => a.City.Country.CountryName.ToLower().Contains(country.ToLower()));
+            
+            query = query
+                .Include(a => a.City)
+                .Include(a => a.City.Country)
+                .Include(a => a.CommentText);
 
-            var filterResult = await query.Take(count).ToListAsync();
+            var filterResult = await query
+                .Take(count)
+                .ToListAsync();
 
             return filterResult.Cast<IAttraction>().ToList();
         }
@@ -62,7 +71,9 @@ public class csAttractionRepo : IAttractionRepo
                 return await db.Attractions
                     .Include(a => a.City)
                     .Include(a => a.CityDbM.Country)
+                    .Include(a => a.City.Country)
                     .Include(a => a.CommentDbM)
+                    .Include(a => a.CommentText)
                     .FirstOrDefaultAsync(a => a.AttractionId == id);
                     
             }
@@ -76,8 +87,11 @@ public class csAttractionRepo : IAttractionRepo
                 // return await db.Attractions
                     .Include(a => a.City)
                     .Include(a => a.CityDbM.Country)
+                    .Include(a => a.City.Country)// Inkludera land
                     .Include(a => a.CommentDbM)
+                    .Include(a => a.CommentText) // Inkludera kommentarer
                     .Where(a => !a.CommentDbM.Any())
+                    .Select(a => (IAttraction)a)
                     .ToListAsync();
 
                 return attractions.Select(a => (IAttraction)a).ToList();
@@ -139,7 +153,6 @@ public class csAttractionRepo : IAttractionRepo
                 }
 
             }
-            
             
             db.Attractions.AddRange(attraction);
             await db.SaveChangesAsync();

@@ -15,7 +15,7 @@ dotnet ef database drop -f -c SqlServerDbContext -p ../DbContext -s ../DbContext
 rm -rf ../DbContext/Migrations
 
 #make a full new migration
-dotnet ef migrations add miInitial -c SqlServerDbContext -p ../DbContext -s ../DbContext -o ../DbContext/Migrations/SqlServerDbContext
+dotnet ef migrations add Simon_Arnar_EFC -c SqlServerDbContext -p ../DbContext -s ../DbContext -o ../DbContext/Migrations/SqlServerDbContext
 
 #update the database from the migration
 dotnet ef database update -c SqlServerDbContext -p ../DbContext -s ../DbContext

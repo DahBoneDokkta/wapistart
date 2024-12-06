@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Seido.Utilities.SeedGenerator;
 using Newtonsoft.Json;
+using System.Linq;
 
 
 
@@ -16,11 +17,15 @@ public class csUserDbM : csUser, ISeed<csUserDbM>
     
     // public override List<IComment> CommentText { get; set;}
     [NotMapped]
-    public override List<IComment> CommentText { get; set; }
+    public override List<IComment> CommentText
+    { 
+        get => Comments?.Cast<IComment>().ToList(); 
+        set => throw new NotImplementedException();
+    }
 
     // Navigation property
     [JsonIgnore]
-    public List<csCommentDbM> Comments { get; set; }
+    public virtual List<csCommentDbM> Comments { get; set; }
 
     public override csUserDbM Seed (csSeedGenerator _seeder)
     {

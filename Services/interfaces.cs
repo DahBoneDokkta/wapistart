@@ -7,7 +7,7 @@ namespace Services;
 
 public interface IUserService 
 {
-    public Task<List<IUser>> GetUsersAsync (int count);
+    // public Task<List<IUser>> GetUsersAsync (int count);
     public Task<List<IUser>> GetAllUsersAsync(int count);
     public Task<IUser> DeleteUserAsync(Guid id);
     public Task Seed(int _count);

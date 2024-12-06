@@ -49,6 +49,9 @@ builder.Services.AddScoped<IUserService, csUserService>();
 
 builder.Services.AddScoped<ICommentRepo, csCommentRepo>();
 builder.Services.AddScoped<ICommentService, csCommentService>();
+
+builder.Services.AddSingleton<csSeedGenerator>();
+
 #endregion
 
 var app = builder.Build();
@@ -71,7 +74,8 @@ app.UseCors(x => x
     .AllowAnyHeader()
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials()); // allow credentials
-
+    
+app.UseAuthorization();
 
 app.MapControllers();
 app.Run();

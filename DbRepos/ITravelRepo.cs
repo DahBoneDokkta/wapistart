@@ -20,7 +20,7 @@ namespace DbRepos
 
     public interface IUserRepo
     {
-        Task<List<IUser>> GetUsersAsync(int count);
+        // Task<List<IUser>> GetUsersAsync(int count);
         Task<List<IUser>> GetAllUsersAsync(int count);
         Task<IUser> DeleteUserAsync(Guid id);
         Task Seed(int count);

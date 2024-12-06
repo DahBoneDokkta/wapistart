@@ -898,7 +898,7 @@ namespace SeedGenerator
                 if (fn == FileName)
                 {
                     //no path in FileName use default directory
-                   return File.Exists(fname(FileName));
+                return File.Exists(fname(FileName));
                 }
     
                 return File.Exists(FileName);

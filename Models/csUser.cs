@@ -8,7 +8,8 @@ namespace Models;
 public class csUser : IUser, ISeed<csUser>
 {
     [Key]
-    public virtual Guid UserId {get; set;} = Guid.NewGuid();
+    public virtual Guid UserId {get; set;}
+    // public virtual Guid UserId {get; set;} = Guid.NewGuid();
     public string FirstName {get; set;}
     public string LastName {get; set;}
     public string Email {get; set;}
@@ -25,7 +26,10 @@ public class csUser : IUser, ISeed<csUser>
     public virtual csUser Seed (csSeedGenerator _seeder)
     {
         UserId = Guid.NewGuid();
-        FirstName = $"Usernames {_seeder.FirstName}";
+        FirstName =  _seeder.FirstName;
+        LastName = _seeder.LastName;
+        FirstName =  _seeder.FirstName;
+        FirstName =  _seeder.FirstName;
         return this;
     }
 }

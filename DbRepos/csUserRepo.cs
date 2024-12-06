@@ -12,17 +12,17 @@ public class csUserRepo : IUserRepo
 
     private const string seedSource = "./friends-seeds1.json";
 
-    public async Task<List<IUser>> GetUsersAsync(int _count)
-    {
-        using (var db = csMainDbContext.DbContext("sysadmin"))
-        {
-             return await db.Users
-                .Include(u => u.Comments)
-                .Take(_count)
-                .Select(c => (IUser)c)
-                .ToListAsync();
-        }
-    }
+    // public async Task<List<IUser>> GetUsersAsync(int _count)
+    // {
+    //     using (var db = csMainDbContext.DbContext("sysadmin"))
+    //     {
+    //         return await db.Users
+    //             .Include(u => u.Comments)
+    //             .Take(_count)
+    //             .Select(c => (IUser)c)
+    //             .ToListAsync();
+    //     }
+    // }
 
     public async Task<IUser> DeleteUserAsync(Guid id) 
     {
@@ -65,11 +65,19 @@ public class csUserRepo : IUserRepo
         {
             using (var db = csMainDbContext.DbContext("sysadmin"))
             {
-                return await db.Users
-                    .Include(u => u.Comments)
-                    .Take(count)
-                    .Select(c => (IUser)c)
-                    .ToListAsync();
+                IQueryable<IUser> query = db.Users.AsNoTracking()
+                .Include(x => x.Comments)
+                .Take(count);
+
+            var userResult = await query.ToListAsync();
+            return userResult;
+                // return await db.Users
+                //     .Include(u => u.Comments)
+                //     .Take(count)
+                //     .Select(c => (IUser)c)
+                //     .ToListAsync();
+
+                    
             }
         }
 

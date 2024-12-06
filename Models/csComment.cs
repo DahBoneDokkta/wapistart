@@ -19,12 +19,9 @@ public class csComment : ISeed<csComment>
     public bool Seeded {get; set;} = false;
     public virtual csComment Seed (csSeedGenerator _seeder)
     {
-        if (Seeded)
-            return this;
-
         CommentId = Guid.NewGuid();
         Seeded = true;
-        CommentText = $"Comments {_seeder.LatinSentence}";
+        CommentText = _seeder.LatinSentence;
         Date = DateTime.Now; // Sätter exakt tidpunkt när kommentaren skapas
         return this;
     }

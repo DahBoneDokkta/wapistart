@@ -27,7 +27,7 @@ namespace DbModels
         // [ForeignKey("AttractionId")]
         public override IAttraction Attraction 
         { 
-            get => Attraction; 
+            get => AttractionDbM; 
             set => throw new NotImplementedException(); 
         }
 
@@ -51,10 +51,11 @@ namespace DbModels
             base.Seed(_seeder);
             return this;
         }
-
+/*
         csCommentDbM ISeed<csCommentDbM>.Seed(csSeedGenerator seedGenerator)
         {
             return this;
         }
+        */
     }
 }

@@ -27,7 +27,7 @@ public class csAttraction : IAttraction, ISeed<csAttraction>
     {
         AttractionId = Guid.NewGuid();
         Seeded = true;
-        Name = $"Attraction Name {_seeder.LatinWords}";
+        Name = string.Join(" ", _seeder.LatinWords(5));
         return this;
     }
 }

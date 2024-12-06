@@ -24,7 +24,7 @@ public class csCity : ICity, ISeed<csCity>
     {
         CityId = Guid.NewGuid();
         Seeded = true;
-        Name = $"Countries {_seeder.MusicGroupName}";
+        Name = _seeder.City();
         return this;
     }
 }

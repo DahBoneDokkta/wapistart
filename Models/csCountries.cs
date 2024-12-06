@@ -18,7 +18,7 @@ public abstract class csCountries : ICountry, ISeed<csCountries>
     {
         CountryId = Guid.NewGuid();
         Seeded = true;
-        CountryName = $"Countries {_seeder.LatinSentence}";
+        CountryName = _seeder.Country;
         return this;
     }
 }

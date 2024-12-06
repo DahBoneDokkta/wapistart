@@ -137,19 +137,21 @@ public class csAttractionRepo : IAttractionRepo
             var users = _seeder.ItemsToList<csUserDbM>(50);
             var countries = _seeder.ItemsToList<csCountryDbM>(4);
 
+                foreach(var city in cities) 
+                {
+                    city.CountryDbM = _seeder.FromList(countries);
+                }
+
             foreach (var a in attraction)
             {
                 a.CountryDbM = _seeder.FromList(countries);
                 a.CityDbM = _seeder.FromList(cities);
-                a.CommentDbM = _seeder.ItemsToList<csCommentDbM>(_seeder.Next(0, 21));
+                var com = _seeder.ItemsToList<csCommentDbM>(_seeder.Next(0, 21));
+                a.CommentDbM = com;
 
                 foreach (var c in a.CommentDbM ) 
                 {
                     c.User = _seeder.FromList(users);
-                }
-                foreach(var city in cities) 
-                {
-                    city.CountryDbM = _seeder.FromList(countries);
                 }
 
             }

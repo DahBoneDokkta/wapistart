@@ -25,7 +25,7 @@ public class csUserDbM : csUser, ISeed<csUserDbM>
 
     // Navigation property
     [JsonIgnore]
-    public virtual List<csCommentDbM> Comments { get; set; }
+    public List<csCommentDbM> Comments { get; set; }
 
     public override csUserDbM Seed (csSeedGenerator _seeder)
     {

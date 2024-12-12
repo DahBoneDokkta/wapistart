@@ -49,5 +49,6 @@ namespace DbRepos
         Task<IAttraction> DeleteAttractionAsync(Guid id);
         Task DeleteAllSeededAttractionsAsync();
         Task Seed(int count);
+        Task<List<IAttraction>> GetAllAttractionsAsync();
     }
 }

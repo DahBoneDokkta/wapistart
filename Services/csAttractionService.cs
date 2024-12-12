@@ -12,6 +12,18 @@ public class csAttractionService : IAttractionService
         _repo = repo;
     }
 
+    public async Task<List<IAttraction>> GetAllAttractionsAsync()
+    {
+        try
+        {
+            return await _repo.GetAllAttractionsAsync();
+        }
+        catch (Exception ex)
+        {
+        throw new Exception("Error! Could not get all attractions.", ex);
+    }
+    }
+
     public async Task<List<IAttraction>> GetFilteredAttractionsAsync(int count, string category = null, string description = null, string name = null, string title = null, string city = null, string country = null) 
     {
         try

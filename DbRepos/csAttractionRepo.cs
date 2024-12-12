@@ -4,13 +4,44 @@ using DbModels;
 using DbContext;
 using Seido.Utilities.SeedGenerator;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DbRepos;
 
 public class csAttractionRepo : IAttractionRepo
 {
+    private readonly csMainDbContext _context;
+    private readonly ILogger<csAttractionRepo> _logger;
+    public csAttractionRepo(csMainDbContext context, ILogger<csAttractionRepo> logger)
+    {
+        _context = context;
+        _logger = logger;
+    }
 
     private const string seedSource = "./friends-seeds1.json";
+
+    public async Task<List<IAttraction>> GetAllAttractionsAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Fetching all attractions from database");
+
+                var result = await _context.Attractions
+                    .Include(a => a.City)
+                    .Include(a => a.City.Country)
+                    .Include(a => a.CommentText)
+                    .ToListAsync();
+
+                _logger.LogInformation($"Fetched {result.Count} attractions");
+
+                return result.Cast<IAttraction>().ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while getting all attractions");
+                throw;
+            }
+        }
     
     public async Task<List<IAttraction>> GetFilteredAttractionsAsync(
         int count,
@@ -34,17 +65,35 @@ public class csAttractionRepo : IAttractionRepo
 
             // Filtrering
             if (!string.IsNullOrEmpty(category))
+            {
                 query = query.Where(a => a.Category.ToLower().Contains(category.ToLower()));
+            }
+                
             if (!string.IsNullOrEmpty(description))
+            {
                 query = query.Where(a => a.Description.ToLower().Contains(description.ToLower()));
+            }
+                
             if (!string.IsNullOrEmpty(name))
+            {
                 query = query.Where(a => a.Name.ToLower().Contains(name.ToLower()));
+            }
+                
             if (!string.IsNullOrEmpty(title))
+            {
                 query = query.Where(a => a.Title.ToLower().Contains(title.ToLower()));
+            }
+                
             if (!string.IsNullOrEmpty(country))
+            {
                 query = query.Where(a => a.City.Name.ToLower().Contains(city.ToLower()));
+            }
+                
             if (!string.IsNullOrEmpty(city))
+            {
                 query = query.Where(a => a.City.Country.CountryName.ToLower().Contains(country.ToLower()));
+            }
+                
             
             query = query
                 .Include(a => a.City)

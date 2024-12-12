@@ -23,6 +23,7 @@ public interface ICommentService
 
 public interface IAttractionService
 {
+    Task<List<IAttraction>> GetAllAttractionsAsync();
     Task<List<IAttraction>> GetFilteredAttractionsAsync(int count, string category = null, string description = null, string name = null, string title = null, string city = null, string country = null);
     Task<IAttraction> GetSingleAttractionAsync(Guid id);
     Task<List<IAttraction>> GetAttractionsWithoutCommentsAsync();

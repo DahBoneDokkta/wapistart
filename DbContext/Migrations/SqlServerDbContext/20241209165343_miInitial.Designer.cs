@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(csMainDbContext.SqlServerDbContext))]
-    [Migration("20241201165547_Simon_Arnar_EFC")]
-    partial class Simon_Arnar_EFC
+    [Migration("20241209165343_miInitial")]
+    partial class miInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AttractionDbMAttractionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("AttractionId")
                         .HasColumnType("uniqueidentifier");
 
@@ -110,12 +113,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<Guid?>("UserDbMUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("CommentId");
 
-                    b.HasIndex("AttractionId");
+                    b.HasIndex("AttractionDbMAttractionId");
 
                     b.HasIndex("UserDbMUserId");
 
@@ -194,9 +194,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     b.HasOne("DbModels.csAttractionDbM", "AttractionDbM")
                         .WithMany("CommentDbM")
-                        .HasForeignKey("AttractionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AttractionDbMAttractionId");
 
                     b.HasOne("DbModels.csUserDbM", "UserDbM")
                         .WithMany("Comments")

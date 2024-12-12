@@ -30,6 +30,7 @@ public class csUser : IUser, ISeed<csUser>
         LastName = _seeder.LastName;
         FirstName =  _seeder.FirstName;
         FirstName =  _seeder.FirstName;
+        Seeded = true;
         return this;
     }
 }

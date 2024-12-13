@@ -28,7 +28,7 @@ public interface IAttractionService
     Task<IAttraction> GetSingleAttractionAsync(Guid id);
     Task<List<IAttraction>> GetAttractionsWithoutCommentsAsync();
     Task<IAttraction> DeleteAttractionAsync(Guid id);
-    Task DeleteAllSeededAttractionsAsync();
+    Task DeleteAllSeededData(bool seeded);
     Task Seed(int _count);
 }
 

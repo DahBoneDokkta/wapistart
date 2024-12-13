@@ -23,7 +23,7 @@ namespace DbRepos
             {
                 return await db.Cities
                     .Include(c => c.CountryDbM)
-                    .Include(c => c.Attractions)
+                    .Include(c => c.AttractionDbM)
                     .Take(count)
                     .Cast<ICity>()
                     .ToListAsync();

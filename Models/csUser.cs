@@ -26,10 +26,9 @@ public class csUser : IUser, ISeed<csUser>
     public virtual csUser Seed (csSeedGenerator _seeder)
     {
         UserId = Guid.NewGuid();
-        FirstName =  _seeder.FirstName;
+        FirstName = _seeder.FirstName;
         LastName = _seeder.LastName;
-        FirstName =  _seeder.FirstName;
-        FirstName =  _seeder.FirstName;
+        Email = _seeder.Email();
         Seeded = true;
         return this;
     }

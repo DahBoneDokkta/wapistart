@@ -23,8 +23,9 @@ public class csCity : ICity, ISeed<csCity>
     public virtual csCity Seed (csSeedGenerator _seeder)
     {
         CityId = Guid.NewGuid();
-        Seeded = true;
         Name = _seeder.City();
+        Address = _seeder.StreetAddress();
+        Seeded = true;
         return this;
     }
 }

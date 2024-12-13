@@ -19,9 +19,9 @@ namespace DbModels
 
         // Attraction has a list of Comments
         [NotMapped]
-        public override List<IComment> CommentText
+        public override List<IComment> Comment
         {
-            get => CommentDbM?.Cast<IComment>().ToList(); 
+            get => CommentDbM?.ToList<IComment>(); 
             set => throw new NotImplementedException(); 
         }
 

@@ -44,11 +44,12 @@ namespace DbRepos
             string city = null,
             string country = null);
 
+        Task<List<IAttraction>> GetAllAttractionsAsync();
         Task<IAttraction> GetSingleAttractionAsync(Guid id);
         Task<List<IAttraction>> GetAttractionsWithNoCommentAsync();
         Task<IAttraction> DeleteAttractionAsync(Guid id);
-        Task DeleteAllSeededAttractionsAsync();
+        Task DeleteAllSeededData(bool seeded);
         Task Seed(int count);
-        Task<List<IAttraction>> GetAllAttractionsAsync();
+        
     }
 }

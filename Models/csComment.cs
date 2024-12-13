@@ -7,7 +7,7 @@ using System;
 
 namespace Models;
 
-public class csComment : ISeed<csComment>
+public class csComment : IComment, ISeed<csComment>
 {
     [Key]
     public virtual Guid CommentId {get; set;} = Guid.NewGuid();

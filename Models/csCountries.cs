@@ -17,8 +17,9 @@ public abstract class csCountries : ICountry, ISeed<csCountries>
     public virtual csCountries Seed (csSeedGenerator _seeder)
     {
         CountryId = Guid.NewGuid();
-        Seeded = true;
         CountryName = _seeder.Country;
+        Seeded = true;
+        
         return this;
     }
 }

@@ -2,6 +2,7 @@ using Configuration;
 using Models;
 using DbModels;
 using DbContext;
+using Microsoft.AspNetCore.Mvc;
 using Seido.Utilities.SeedGenerator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,11 +11,9 @@ namespace DbRepos;
 
 public class csAttractionRepo : IAttractionRepo
 {
-    private readonly csMainDbContext _context;
     private readonly ILogger<csAttractionRepo> _logger;
-    public csAttractionRepo(csMainDbContext context, ILogger<csAttractionRepo> logger)
+    public csAttractionRepo(ILogger<csAttractionRepo> logger)
     {
-        _context = context;
         _logger = logger;
     }
 
@@ -24,17 +23,21 @@ public class csAttractionRepo : IAttractionRepo
         {
             try
             {
-                _logger.LogInformation("Fetching all attractions from database");
+                using (var db = csMainDbContext.DbContext("sysadmin"))
+                {
+                    _logger.LogInformation("Fetching all attractions from database");
 
-                var result = await _context.Attractions
-                    .Include(a => a.City)
-                    .Include(a => a.City.Country)
-                    .Include(a => a.CommentText)
+                var result = await db.Attractions
+                    .Include(a => a.CityDbM)
+                    .Include(a => a.CityDbM.CountryDbM)
+                    .Include(a => a.CommentDbM)
                     .ToListAsync();
 
                 _logger.LogInformation($"Fetched {result.Count} attractions");
 
-                return result.Cast<IAttraction>().ToList();
+                return result.ToList<IAttraction>();
+                }
+
             }
             catch (Exception ex)
             {
@@ -68,27 +71,22 @@ public class csAttractionRepo : IAttractionRepo
             {
                 query = query.Where(a => a.Category.ToLower().Contains(category.ToLower()));
             }
-                
             if (!string.IsNullOrEmpty(description))
             {
                 query = query.Where(a => a.Description.ToLower().Contains(description.ToLower()));
             }
-                
             if (!string.IsNullOrEmpty(name))
             {
                 query = query.Where(a => a.Name.ToLower().Contains(name.ToLower()));
             }
-                
             if (!string.IsNullOrEmpty(title))
             {
                 query = query.Where(a => a.Title.ToLower().Contains(title.ToLower()));
             }
-                
             if (!string.IsNullOrEmpty(country))
             {
                 query = query.Where(a => a.City.Name.ToLower().Contains(city.ToLower()));
             }
-                
             if (!string.IsNullOrEmpty(city))
             {
                 query = query.Where(a => a.City.Country.CountryName.ToLower().Contains(country.ToLower()));
@@ -96,9 +94,9 @@ public class csAttractionRepo : IAttractionRepo
                 
             
             query = query
-                .Include(a => a.City)
-                .Include(a => a.City.Country)
-                .Include(a => a.CommentText);
+                .Include(a => a.CityDbM)
+                .Include(a => a.CityDbM.CountryDbM)
+                .Include(a => a.CommentDbM);
 
             var filterResult = await query
                 .Take(count)
@@ -115,63 +113,155 @@ public class csAttractionRepo : IAttractionRepo
 
     public async Task<IAttraction> GetSingleAttractionAsync(Guid id)
     {
+        try
+        {
             using (var db = csMainDbContext.DbContext("sysadmin"))
             {
-                return await db.Attractions
-                    .Include(a => a.City)
-                    .Include(a => a.CityDbM.Country)
-                    .Include(a => a.City.Country)
-                    .Include(a => a.CommentDbM)
-                    .Include(a => a.CommentText)
-                    .FirstOrDefaultAsync(a => a.AttractionId == id);
-                    
+                // Bygg en query som inkluderar alla relaterade entiteter
+                var _query = db.Attractions
+                    .Where(a => a.AttractionId == id)  // Filtrera på rätt AttractionId
+                    .Include(a => a.CommentDbM)  // Inkludera kommentarer
+                    .Include(a => a.CityDbM)  // Inkludera stad
+                    .Include(a => a.CityDbM.Country)  // Inkludera land från City
+                    .Include(a => a.City.Country);  // Inkludera land direkt från City
+
+                // Utför frågan och hämta listan
+                var attractions = await _query.ToListAsync();
+
+                // Kontrollera om vi har något resultat och returnera första
+                if (attractions.Any())
+                {
+                    return attractions.First();  // Returnera första objektet från listan
+                }
+
+                // Om inget resultat hittas, kan du kasta ett undantag eller returnera null
+                throw new ArgumentException("Attraction not found");
             }
+        }
+        catch (Exception ex)
+        {
+            // Hantera eventuella fel
+            throw new ArgumentException("Something went wrong", ex.Message);
+        }
     }
 
-    public async Task<List<IAttraction>> GetAttractionsWithNoCommentAsync()
+    public async Task<List<IAttraction>> GetAttractionsWithNoCommentAsync() 
     {
+        try
+        {
             using (var db = csMainDbContext.DbContext("sysadmin"))
             {
-                var attractions = await db.Attractions
-                // return await db.Attractions
-                    .Include(a => a.City)
-                    .Include(a => a.CityDbM.Country)
-                    .Include(a => a.City.Country)// Inkludera land
-                    .Include(a => a.CommentDbM)
-                    .Include(a => a.CommentText) // Inkludera kommentarer
-                    .Where(a => !a.CommentDbM.Any())
-                    .Select(a => (IAttraction)a)
-                    .ToListAsync();
-
-                return attractions.Select(a => (IAttraction)a).ToList();
+                // Skapa en query med AsNoTracking för bättre prestanda
+                IQueryable<IAttraction> query = db.Attractions.AsNoTracking()
+                    .Include(a => a.CommentDbM); // Inkludera kommentarer
+            
+                // Hämta alla attraktioner
+                var attractions = await query.ToListAsync();
+            
+                // Filtrera de attraktioner som inte har några kommentarer
+                var result = attractions.Where(a => a.Comment == null || a.Comment.Count == 0).ToList();
+            
+                return result;
             }
+        }
+        catch (Exception ex)
+        {
+            // Hantera eventuella fel
+            throw new ArgumentException("Something went wrong", ex.Message);
+        }
     }
+
+
+
+    // public async Task<IAttraction> GetSingleAttractionAsync(Guid id)
+    // {
+    //         using (var db = csMainDbContext.DbContext("sysadmin"))
+    //         {
+    //             return await db.Attractions
+    //                 .Include(a => a.City)
+    //                 .Include(a => a.CityDbM.Country)
+    //                 .Include(a => a.City.Country)
+    //                 .Include(a => a.CommentDbM)
+    //                 // .Include(a => a.Comment)
+    //                 .FirstOrDefaultAsync(a => a.AttractionId == id);
+                    
+    //         }
+    // }
+
+    // public async Task<List<IAttraction>> GetAttractionsWithNoCommentAsync()
+    // {
+    //         using (var db = csMainDbContext.DbContext("sysadmin"))
+    //         {
+    //             var attractions = await db.Attractions
+    //             // return await db.Attractions
+    //                 .Include(a => a.City)
+    //                 .Include(a => a.CityDbM.Country)
+    //                 .Include(a => a.City.Country)// Inkludera land
+    //                 .Include(a => a.CommentDbM)
+    //                 .Include(a => a.Comment) // Inkludera kommentarer
+    //                 .Where(a => !a.CommentDbM.Any())
+    //                 .Select(a => (IAttraction)a)
+    //                 .ToListAsync();
+
+    //             return attractions.Select(a => (IAttraction)a).ToList();
+    //         }
+    // }
+
+    // public async Task<IAttraction> DeleteAttractionAsync(Guid id)
+    // {
+    //         using (var db = csMainDbContext.DbContext("sysadmin"))
+    //         {
+    //             var attraction = await db.Attractions.FindAsync(id);
+    //             if (attraction != null)
+    //             {
+    //                 db.Attractions.Remove(attraction);
+    //                 await db.SaveChangesAsync();
+    //             }
+    //             return attraction;
+    //         }
+    // }
 
     public async Task<IAttraction> DeleteAttractionAsync(Guid id)
     {
-            using (var db = csMainDbContext.DbContext("sysadmin"))
+        try
+        {
+            await using (var db = csMainDbContext.DbContext("sysadmin"))
             {
+                // Hitta attraktionen med FindAsync
                 var attraction = await db.Attractions.FindAsync(id);
-                if (attraction != null)
+
+                if (attraction is null)
                 {
-                    db.Attractions.Remove(attraction);
-                    await db.SaveChangesAsync();
+                    throw new KeyNotFoundException($"The attraction with ID {id} does not exist.");
                 }
+
+                // Ta bort attraktionen
+                db.Attractions.Remove(attraction);
+                await db.SaveChangesAsync();
+
                 return attraction;
             }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while deleting the attraction.", ex);
+        }
     }
 
-    // public async Task DeleteAllSeededAttractionsAsync()
-    public async Task DeleteAllSeededAttractionsAsync()
-    {
-        using (var db = csMainDbContext.DbContext("sysadmin"))
-        {
-            var seededAttractions = await db.Attractions
-                .Where(a => a.Seeded)
-                .ToListAsync();
 
-            db.Attractions.RemoveRange(seededAttractions);
+    public async Task<IAttraction> DeleteAllSeededData(bool seeded) 
+    {
+        using(var db = csMainDbContext.DbContext("sysadmin")) 
+        {
+            db.Attractions.RemoveRange(db.Attractions.Where(a => a.Seeded == seeded ));
+            db.CommentText.RemoveRange(db.CommentText.Where(c => c.Seeded == seeded ));
+            db.Users.RemoveRange(db.Users.Where(u => u.Seeded == seeded ));
+            db.Cities.RemoveRange(db.Cities.Where(ci => ci.Seeded == seeded ));
+            db.Countries.RemoveRange(db.Countries.Where(co => co.Seeded == seeded ));
+
             await db.SaveChangesAsync();
+
+            return null;        
         }
     }
 

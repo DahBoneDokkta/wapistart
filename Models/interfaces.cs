@@ -43,7 +43,7 @@ public interface IAttraction
     string Description {get; set;}
     string Category {get; set;}
     string Title {get; set;}
-    List<IComment> CommentText {get; set;}
+    List<IComment> Comment {get; set;}
     ICity City {get; set;}
     ICountry Country {get; set;}
 }

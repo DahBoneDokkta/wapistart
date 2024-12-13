@@ -73,40 +73,40 @@ namespace AppWebApi.Controllers
         }
 
         // POST: api/csAdmin/seed
-        [HttpPost("seed")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> Seed(string countAttractions = "", string countCities = "", string countUsers = "")
-        {
-            try
-            {
-                _logger.LogInformation("Endpoint Seed executed");
+        // [HttpPost("seed")]
+        // [ProducesResponseType(200, Type = typeof(string))]
+        // [ProducesResponseType(400, Type = typeof(string))]
+        // public async Task<IActionResult> Seed(string countAttractions = "", string countCities = "", string countUsers = "")
+        // {
+        //     try
+        //     {
+        //         _logger.LogInformation("Endpoint Seed executed");
 
-                // Kontrollera och konvertera parametrar
-                if (!int.TryParse(countAttractions, out var cAttractions) ||
-                    !int.TryParse(countCities, out var cCities) ||
-                    !int.TryParse(countUsers, out var cUsers))
-                {
-                    _logger.LogWarning("Invalid count values provided.");
-                    return BadRequest("Count values must be valid integers.");
-                }
+        //         // Kontrollera och konvertera parametrar
+        //         if (!int.TryParse(countAttractions, out var cAttractions) ||
+        //             !int.TryParse(countCities, out var cCities) ||
+        //             !int.TryParse(countUsers, out var cUsers))
+        //         {
+        //             _logger.LogWarning("Invalid count values provided.");
+        //             return BadRequest("Count values must be valid integers.");
+        //         }
 
-                // Seed städer
-                await _cityService.Seed(cCities);
+        //         // Seed städer
+        //         await _cityService.Seed(cCities);
 
-                // Seed attraktioner
-                await _attractionService.Seed(cAttractions);
+        //         // Seed attraktioner
+        //         await _attractionService.Seed(cAttractions);
 
-                // Seed användare
-                await _userService.Seed(cUsers);
+        //         // Seed användare
+        //         await _userService.Seed(cUsers);
 
-                return Ok("Seeded attractions, cities, and users successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An error occurred: {ex.Message}");
-                return BadRequest(ex.Message);
-            }
-        }
+        //         return Ok("Seeded attractions, cities, and users successfully.");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError($"An error occurred: {ex.Message}");
+        //         return BadRequest(ex.Message);
+        //     }
+        // }
     }
 }

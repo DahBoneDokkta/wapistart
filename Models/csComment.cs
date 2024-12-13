@@ -20,9 +20,9 @@ public class csComment : IComment, ISeed<csComment>
     public virtual csComment Seed (csSeedGenerator _seeder)
     {
         CommentId = Guid.NewGuid();
-        Seeded = true;
         CommentText = _seeder.LatinSentence;
         Date = DateTime.Now; // Sätter exakt tidpunkt när kommentaren skapas
+        Seeded = true;
         return this;
     }
 }

@@ -24,44 +24,31 @@ namespace AppWebApi.Controllers
             _logger = logger;
         }
 
-        // GET: api/csAttraction/GetAllAttractions
-        [HttpGet("GetAllAttractions")]
-        [ProducesResponseType(200, Type = typeof(List<csAttraction>))]
+        [HttpGet("GetAttractions")]
+        [ActionName("GetAttractions")]
+        [ProducesResponseType(200, Type = typeof(List<IAttraction>))]
         [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> GetAllAttractions(string count)
+        public async Task<IActionResult> GetAllAttractions(string count, string category = "", string description = "", string name = "", string heading = "", string city = "", string country = "")
         {
             try
             {
-                _logger.LogInformation("Endpoint GetAllAttractions executed");
+                _logger.LogInformation("Endpoint All Attraction executed");
+                var _count = int.Parse(count);
 
-                if (!string.IsNullOrWhiteSpace(count) && !int.TryParse(count, out var _count))
-                {
-                    _logger.LogWarning("Invalid count value provided: {count}", count);
-                    return BadRequest("Count must be a valid integer.");
-                }
-
-                _logger.LogInformation("Fetching attractions from service...");
-                var attractions = await _service.GetAllAttractionsAsync();
-                _logger.LogInformation("Successfully fetched {count} attractions", attractions.Count);
-
-                if (!string.IsNullOrWhiteSpace(count))
-                {
-                    attractions = attractions.Take(int.Parse(count)).ToList();
-                    _logger.LogInformation("Returning first {count} attractions", count);
-                }
-
+                var attractions = await _service.GetFilteredAttractionsAsync(_count, category, description, name, heading, city, country);
                 return Ok(attractions);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error in GetAllAttractions: {message}", ex.Message);
-                return BadRequest("Error retrieving attractions: " + ex.Message);
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
-    }
+        }
+
 
 
         // GET: api/csAttraction/Seed
-        [HttpGet("Seed")]
+        [HttpPost("Seed")]
         [ActionName("Seed")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -126,34 +113,8 @@ namespace AppWebApi.Controllers
             }
         }
 
-                 //DELETE: api/attractions/deleteone/id
-        [HttpDelete("{id}")]
-        [ActionName("DeleteAttraction")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        public async Task<IActionResult> DeleteAttraction(string id)
-        {
-            try
-            {
-                Guid _id = Guid.Parse(id);
-                
-                var attraction = await _service.DeleteAttractionAsync(_id);
 
-                if (attraction == null) 
-                {
-                    return BadRequest($"The Attraction with {id} does not exist!");
-                }
-                _logger.LogInformation($"One Attraction with {id} has been deleted!");
-
-                return Ok($"The attraction with {_id} is deleted from the database.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpDelete()]
+        [HttpDelete("DeleteAllSeededData")]
         [ActionName("DeleteAllSeededData")]
         [ProducesResponseType(200, Type = typeof(string))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -166,7 +127,6 @@ namespace AppWebApi.Controllers
                 await _service.DeleteAllSeededData(seeded);
                 return Ok("Data has been deleted");
 
-                
             }
             catch (Exception ex)
             {

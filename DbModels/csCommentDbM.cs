@@ -16,15 +16,10 @@ namespace DbModels
 
         // Mappar från IAttraction till csAttractionDbM
         [JsonIgnore]
+        [ForeignKey("AttractionId")]
         public csAttractionDbM AttractionDbM {get; set;}
-        // {
-        //     get => AttractionDbM; 
-        //     set => AttractionDbM = value as csAttractionDbM; // Här mappas interface till konkret typ
-        // }
 
-        // Här definierar vi den konkreta relationen till AttractionDbM
         [NotMapped]
-        // [ForeignKey("AttractionId")]
         public override IAttraction Attraction 
         { 
             get => AttractionDbM; 
@@ -37,13 +32,10 @@ namespace DbModels
         {
             get => UserDbM; 
             set => throw new NotImplementedException();
-            // set => UserDbM = value as csUserDbM;
         }
 
         // ForeignKey till User
         [JsonIgnore]
-        // [ForeignKey("UserId")]
-        // public Guid? UserId {get; set;}
         public csUserDbM UserDbM { get; set; }
 
         public override csCommentDbM Seed(csSeedGenerator _seeder)

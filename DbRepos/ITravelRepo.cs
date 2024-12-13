@@ -37,18 +37,18 @@ namespace DbRepos
     {
         Task<List<IAttraction>> GetFilteredAttractionsAsync(
             int count,
-            string category = null,
-            string description = null,
-            string name = null,
-            string title = null,
-            string city = null,
-            string country = null);
+            string category,
+            string description,
+            string name,
+            string title,
+            string city,
+            string country);
 
         Task<List<IAttraction>> GetAllAttractionsAsync();
         Task<IAttraction> GetSingleAttractionAsync(Guid id);
         Task<List<IAttraction>> GetAttractionsWithNoCommentAsync();
-        Task<IAttraction> DeleteAttractionAsync(Guid id);
-        Task DeleteAllSeededData(bool seeded);
+        // Task<IAttraction> DeleteAttractionAsync(Guid id);
+        Task <IAttraction> DeleteAllSeededData(bool seeded);
         Task Seed(int count);
         
     }

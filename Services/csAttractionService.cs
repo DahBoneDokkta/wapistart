@@ -24,7 +24,6 @@ public class csAttractionService : IAttractionService
             _logger.LogInformation("Service: Successfully fetched {count} attractions", result.Count);
 
             return result;
-            // return await _repo.GetAllAttractionsAsync();
         }
         catch (Exception ex)
         {
@@ -43,7 +42,6 @@ public class csAttractionService : IAttractionService
         {
             throw new Exception("Error! Could not get filtered attractions.", ex);
         }
-        // return await _repo.GetFilteredAttractionsAsync(count, category, description, name, title, city, country);
     }
 
     public async Task<IAttraction> GetSingleAttractionAsync(Guid id) 
@@ -56,7 +54,6 @@ public class csAttractionService : IAttractionService
         {
             throw new Exception($"Error! Could not get attraction with ID: {id}", ex);
         }
-        // return await _repo.GetSingleAttractionAsync(id);
     }
 
     public async Task<List<IAttraction>> GetAttractionsWithoutCommentsAsync() 
@@ -69,21 +66,20 @@ public class csAttractionService : IAttractionService
         {
             throw new Exception("Error! Could not get attractions without comments.", ex);
         }
-        // return await _repo.GetAttractionsWithNoCommentAsync();
     }
 
-    public async Task<IAttraction> DeleteAttractionAsync(Guid id) 
-    {
-        try
-        {
-            return await _repo.DeleteAttractionAsync(id);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error! Could not delete attraction with ID: {id}", ex);
-        }
-        // return await _repo.DeleteAttractionAsync(id);
-    }
+    // public async Task<IAttraction> DeleteAttractionAsync(Guid id) 
+    // {
+    //     try
+    //     {
+    //         return await _repo.DeleteAttractionAsync(id);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         throw new Exception($"Error! Could not delete attraction with ID: {id}", ex);
+    //     }
+    //     // return await _repo.DeleteAttractionAsync(id);
+    // }
 
     public async Task DeleteAllSeededData(bool seeded)
     {
@@ -97,7 +93,6 @@ public class csAttractionService : IAttractionService
         {
             throw new Exception("Error! Could not delete all seeded attractions.", ex);
         }
-        // await _repo.DeleteAllSeededAttractionsAsync();
     }
 
     public async Task Seed(int count) 
@@ -110,6 +105,5 @@ public class csAttractionService : IAttractionService
         {
             throw new Exception("Error! Could not seed attractions.", ex);
         }
-        // await _repo.Seed(count);
     }
 }
